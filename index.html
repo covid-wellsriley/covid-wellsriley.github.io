@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8">
+   <title>COVID-19 eqACH Recommendations</title>
+   <meta name="description" content="COVID-19 eqACH Recommendations">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   <link href="style.css" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@200&family=Poppins:wght@200&family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet"></head>
+
+<body class="bg-light">
+   <main class="container bg-light text-primary pb-5">
+      <h1 class="display-5 ms-3 my-4">
+         Wells-Riley Model Indoor COVID-19 Recommendations
+      </h1>
+      <div class="row align-items-start mx-3">
+         <div class="col-md-5">
+            <div class="border bg-white rounded px-4 py-2">
+               <h3>Model Parameters</h3>
+               <div class="mb-2 row">
+                  <label for="inputNumInfectants" class="col-auto text-secondary col-form-label-sm text-uppercase"># Infectants</label>
+                  <div class="col-3">
+                     <input type="number" value=1 id="inputNumInfectants" class="form-control form-control-sm input">
+                  </div>
+               </div>
+               <div class="mb-2 row">
+                  <label for="inputNumPeople" class="col-auto text-secondary col-form-label-sm text-uppercase"># People in Room</label>
+                  <div class="col-3">
+                     <input type="number" value=10 id="inputNumPeople" class="form-control form-control-sm input">
+                  </div>
+               </div>
+               <div class="mb-2 row">
+                  <label for="inputExposureTime" class="col-auto text-secondary col-form-label-sm text-uppercase">Exposure Time <span class="text-lowercase">(hr)</span></label>
+                  <div class="col-3">
+                     <input type="number" value=1 id="inputExposureTime" class="form-control form-control-sm input">
+                  </div>
+               </div>
+               <div class="mb-2 row">
+                  <label for="inputRoomVolume" class="col-auto text-secondary col-form-label-sm text-uppercase">Room Volume (<span class="text-lowercase">m<sup>3</sup>)</span></label>
+                  <div class="col-3">
+                     <input type="number" value=80 id="inputRoomVolume" class="form-control form-control-sm input">
+                  </div>
+               </div>
+               <div class="mb-2">
+                  <label for="breathRateSelect" class="text-secondary col-form-label-sm text-uppercase">
+                     Breathing Rate: <span class="text-primary text-lowercase"><span id="breathRateVal">0.5</span>m<sup>3</sup>/h</span>
+                  </label>
+                  <select id="breathRateSelect" class="form-select form-select-sm input">
+                     <option id="breathRateCustom" value="custom">Custom</option>
+                  </select>
+                  <input disabled id="breathRateRange" type="range" min="0.25" max="1.5" value="0.5" step="0.05" class="form-range mt-2 input">
+               </div>
+               <div class="mb-2">
+                  <label for="quantaProdSelect" class="text-secondary col-form-label-sm text-uppercase">
+                     Quanta Production: <span class="text-primary text-lowercase"><span id="quantaProdVal">0.5</span>q/h</span>
+                  </label>
+                  <select id="quantaProdSelect" class="form-select form-select-sm input">
+                     <option id="quantaProdCustom" value="custom">Custom</option>
+                  </select>
+                  <input disabled id="quantaProdRange" type="range" min="1" max="420" value="0.5" step="0.1" class="form-range mt-2 input">
+               </div>
+               <div class="mb-2">
+                  <label for="quantaEffectSelect" class="text-secondary col-form-label-sm text-uppercase">
+                     Variant effect: <span class="text-primary text-lowercase">x<span id="quantaEffectVal">1</span></span>
+                  </label>
+                  <select id="quantaEffectSelect" class="form-select form-select-sm input">
+                     <option id="quantaEffectCustom" value="custom">Custom</option>
+                  </select>
+                  <input disabled id="quantaEffectRange" type="range" min="0.5" max="4" value="1.0" step="0.1" class="form-range mt-2 input">
+               </div>
+               <div class="mb-2">
+                  <label for="ventilationSelect" class="text-secondary col-form-label-sm">
+                     VENTILATION: <span class="text-primary"><span id="ventilationVal">0.3</span>h<sup>-1</sup> (ACH)</span>
+                  </label>
+                  <select id="ventilationSelect" class="form-select form-select-sm input">
+                     <option id="ventilationCustom" value="custom">Custom</option>
+                  </select>
+                  <input disabled id="ventilationRange" type="range" min="0.1" max="8" value="0.3" step="0.1" class="form-range mt-2 input">
+               </div>
+               <div class="mb-2">
+                  <label for="decompRange" class="text-secondary col-form-label-sm">
+                     DECOMPOSITION AND DECAY: <span class="text-primary"><span id="decompVal">0.11</span>h<sup>-1</sup> (ACH)</span>
+                  </label>
+                  <input id="decompRange" type="range" min="0.0" max="1.0" value="0.11" step="0.01" class="form-range mt-2 input">
+               </div>
+            </div>
+         </div>
+         <div class="col-md-7">
+            <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3 mb-3">
+               <h5>
+                  Required sustainable eqACh for R<0.25 is <span id='output_eqACH' class="text-primary"></span>. The amount of time required for removal 99.9% efficiency is <span class="text-primary"><span id='output_time'></span> minutes.</span>
+               </h5>
+            </div>
+            <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
+               <h3 class="text-primary">About</h3>
+               <h5>
+                  This app uses the Wells-Riley model to quantitatively assess the infection risk from COVID-19. By adjusting the provided variables, you may see the recommended air changes per hour to limit the number of infected persons to less than 0.25 and the amount of time required for 99.9% efficient removal of air contaminants. 
+               </h5>
+               <h5 class="text-primary">References</h5>
+               <p>
+                  Bazant and Bush, <a href="https://www.pnas.org/doi/10.1073/pnas.2018995118" target="_blank">A guideline to limit indoor airborne transmission of COVID-19</a><br>
+                  Loomans, <a href="https://www.rehva.eu/rehva-journal/chapter/calculating-the-risk-of-infection" target="_blank">Calculating the risk of infection</a><br>
+                  G. Buonanno, L. Morawska, L. Stabile, <a href="https://doi.org/10.1016/j.envint.2020.106112" target="_blank">Quantitative assessment of the risk of airborne transmission of SARS-CoV-2 infection: Prospective and retrospective applications</a>
+               </p>
+            </div>
+            <div id="spinner" hidden class="spinner-border" role="status">
+               <span class="visually-hidden">Loading...</span>
+             </div>
+         </div>
+      </div>
+   </main>
+   <script>
+   (function() {
+      data={
+         "breathRate": [
+            {
+               default: 2
+            },
+            {
+               name: "Breathing",
+               value: 0.5
+            },
+            {
+               name: "Speaking",
+               value: 0.75
+            },
+            {
+               name: "Singing",
+               value: 1.0
+            }
+         ],
+         "quantaProd": [
+            {
+               default: 6
+            },
+            {
+               name: "Resting - Oral breathing",
+               value: 2
+            },
+            {
+               name: "Resting - Speaking",
+               value: 9.4
+            },
+            {
+               name: "Resting - Loudly speaking",
+               value: 60.5
+            },
+            {
+               name: "Resting - Oral breathing",
+               value: 2.3
+            },
+            {
+               name: "Standing - Speaking",
+               value: 11.4
+            },
+            {
+               name: "Standing - Loudly speaking",
+               value: 65.1
+            },
+            {
+               name: "Light exercise - Oral breathing",
+               value: 5.6
+            },
+            {
+               name: "Light exercise - Speaking",
+               value: 26.3
+            },
+            {
+               name: "Light exercise - Loudly speaking",
+               value: 170
+            },
+            {
+               name: "Heavy exercise - Oral breathing",
+               value: 13.5
+            },
+            {
+               name: "Heavy exercise - Speaking",
+               value: 63.1
+            },
+            {
+               name: "Heavy exercise - Loudly speaking",
+               value: 408
+            }
+         ],
+         "quantaEffect": [
+            {
+               default: 1
+            },
+            {
+               name: "Wildtype",
+               value: 1
+            },
+            {
+               name: "California",
+               value: 1.2
+            },
+            {
+               name: "UK",
+               value: 1.5
+            },
+            {
+               name: "Delta",
+               value: 2
+            }
+         ],
+         "ventilation": [
+            {
+               default: 1
+            },
+            {
+               name: "Closed windows",
+               value: 0.3
+            },
+            {
+               name: "Open windows",
+               value: 2.0
+            },
+            {
+               name: "Mechanical ventilation",
+               value: 3.0
+            },
+            {
+               name: "Open windows with fans",
+               value: 6.0
+            }
+         ]
+      };
+      $.each(data, function(key, value) {
+         var defaultKey=1;
+         $.each(data[key], function(i, f) {
+            if(i==0) defaultKey=f.default;
+            else{
+               var option = "<option value='" + f.value + "'" + (i==defaultKey?" selected":"") + ">" + f.name + "</option>"
+               $(option).insertBefore("#"+key+"Custom");
+               const select=document.getElementById(key+"Select");
+               const value=document.getElementById(key+"Val");
+               const range=document.getElementById(key+"Range");
+               range.value=data[key][defaultKey].value;
+               value.textContent=data[key][defaultKey].value;
+               select.addEventListener("change",(event)=>{
+                  if(event.target.value!="custom"){
+                     value.textContent=event.target.value;
+                     range.value=event.target.value;
+                     range.setAttribute("disabled", "true");
+                  }
+                  else range.removeAttribute("disabled");
+               });
+               range.addEventListener("input",()=>{
+                  value.textContent=range.value;
+               });
+            }
+         });
+      });
+      const decompVal=document.getElementById("decompVal");
+      const decompRange=document.getElementById("decompRange");
+      decompRange.addEventListener("input",()=>{
+         decompVal.textContent=decompRange.value;
+      });
+   })();
+
+   $(".input").change(function(){
+      runCalc()
+   });
+
+   function calculate() {
+      return new Promise(function(resolve, reject) {
+         var result = [];
+         var i = parseFloat(document.getElementById("inputNumInfectants").value);
+         var p = parseFloat(document.getElementById("breathRateVal").textContent);
+         var q = parseFloat(document.getElementById("quantaProdVal").textContent);
+         var t = parseFloat(document.getElementById("inputExposureTime").value);
+         var variantEff = parseFloat(document.getElementById("quantaEffectVal").textContent);
+         var V = parseFloat(document.getElementById("inputRoomVolume").value);
+         var N = parseFloat(document.getElementById("inputNumPeople").value);
+         var ACH_v = parseFloat(document.getElementById("ventilationVal").textContent);
+         var ACH_d = parseFloat(document.getElementById("decompVal").textContent);
+         var eqACH = (-i*p*q*t*variantEff/V)/(Math.log(1-(0.25/N)))-(ACH_v+ACH_d);
+         var time = (-Math.log(1/1000)/eqACH)*60;
+         result.push(eqACH);
+         result.push(time);
+         resolve(result);
+      });
+   }
+
+   function runCalc(){
+      $("#spinner").removeAttr('hidden');
+      calculate().then(function (result) {
+         $("#output_eqACH").text(result[0].toFixed(2));
+         $("#output_time").text(result[1].toFixed(2));
+         $("#spinner").attr('hidden','true');
+      })
+   }
+
+   runCalc();
+   </script>
+</body>
+
+</html>
