@@ -98,6 +98,13 @@
                   Required sustainable eqACh for R<0.25 is <span id='output_eqACH' class="text-primary"></span>. The amount of time required for removal 99.9% efficiency is <span class="text-primary"><span id='output_time'></span> minutes.</span>
                </h5>
             </div>
+            <div class="border bg-white rounded px-4 pt-4 pb-3 mb-3">
+               <h3 class="text-primary">Recommended Products</h3>
+               <h5 class="text-primary">Big <span class="text-secondary" id="bigNum"></span></h5></h5>
+               <h5 class="text-primary">Medium <span class="text-secondary" id="midNum"></span></h5>
+               <h5 class="text-primary">Small <span class="text-secondary" id="smallNum"></span></h5>
+               <h5 class="text-primary">Total eqEACH <span class="text-secondary" id="totaleqEach"></span></h5>
+            </div>
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
                <h3 class="text-primary">About</h3>
                <h5>
@@ -266,7 +273,7 @@
    })();
 
    $(".input").change(function(){
-      runCalc()
+      calcProducts();
    });
 
    function calculate() {
@@ -289,16 +296,54 @@
       });
    }
 
-   function runCalc(){
+   function calcProducts(){
       $("#spinner").removeAttr('hidden');
       calculate().then(function (result) {
          $("#output_eqACH").text(result[0].toFixed(2));
          $("#output_time").text(result[1].toFixed(2));
+         var roomVol = $("#inputRoomVolume").val()
+
+         var bigSize = 0.05488;
+         var midSize = 0.030926;
+         var smallSize = 0.00867;
+         var bigEACH = (380/1.699)/(roomVol-bigSize);
+         var midEACH = (220/1.699)/(roomVol-midSize);
+         var smallEACH = (65/1.699)/(roomVol-smallSize);
+
+         var remainderEACH = result[0];
+         
+         if(remainderEACH>=bigEACH){
+            var bigNum = Math.floor(remainderEACH/bigEACH);
+            remainderEACH = remainderEACH - bigNum*bigEACH;
+         }
+         else var bigNum = 0;
+         if(remainderEACH>=midEACH){
+            var midNum = Math.floor(remainderEACH/midEACH);
+            remainderEACH = remainderEACH - midNum*midEACH;
+         }
+         else var midNum = 0;
+         if(remainderEACH>0){
+            var smallNum = Math.ceil(remainderEACH/smallEACH);
+         }
+         else var smallNum = 0;
+
+         if(bigNum) $("#bigNum").text(bigNum);
+         else $("#bigNum").text("0");
+
+         console.log(midNum)
+         if(midNum) $("#midNum").text(midNum);
+         else $("#midNum").text("0");
+
+         if(smallNum) $("#smallNum").text(smallNum);
+         else $("#smallNum").text("0");
+
+         $("#totaleqEach").text((bigEACH*bigNum+midEACH*midNum+smallEACH*smallNum).toFixed(2));
+
          $("#spinner").attr('hidden','true');
       })
    }
 
-   runCalc();
+   calcProducts();
    </script>
 </body>
 
