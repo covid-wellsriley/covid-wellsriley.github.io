@@ -95,13 +95,50 @@
          <div class="col-md-7">
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3 mb-3">
                <h5>
-                  Required sustainable eqACh for R<0.25 is <span id='output_eqACH' class="text-primary"></span>. The amount of time required for removal 99.9% efficiency is <span class="text-primary"><span id='output_time'></span> minutes.</span>
+                  Required sustainable eqACh for R<0.25 is <span id='output_eqACH_25' class="text-primary"></span>. The amount of time required for removal 99.99% efficiency is <span class="text-primary"><span id='output_time_25'></span> minutes.</span><br>
+                  Required sustainable eqACh for R<1.0 is <span id='output_eqACH_1' class="text-primary"></span>. The amount of time required for removal 99.99% efficiency is <span class="text-primary"><span id='output_time_1'></span> minutes.</span>
                </h5>
+            </div>
+            <div class="border bg-white rounded px-4 pt-4 pb-3 mb-3">
+               <h3 class="text-primary">Recommended Products</h3>
+               <h5 class="text-secondary">Total eqEACH: <span class="text-secondary" id="totaleqEach"></span></h5>
+               <div class="row">
+                  <div id="bigProd" class="col-sm-4">
+                    <div class="card">
+                     <img src="https://via.placeholder.com/200x150" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Big (Product name?)</h5>
+                        <p class="card-text">Number of devices: <span class="text-secondary" id="bigNum"></span></p>
+                        <a href="#" class="btn btn-primary">Link to product?</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="midProd" class="col-sm-4">
+                    <div class="card">
+                     <img src="https://via.placeholder.com/200x150" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Mid (Product name?)</h5>
+                        <p class="card-text">Number of devices: <span class="text-secondary" id="midNum"></span></p>
+                        <a href="#" class="btn btn-primary">Link to product?</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="smallProd" class="col-sm-4">
+                    <div class="card">
+                     <img src="https://via.placeholder.com/200x150" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Sm (Product name?)</h5>
+                        <p class="card-text">Number of devices: <span class="text-secondary" id="smallNum"></span></p>
+                        <a href="#" class="btn btn-primary">Link to product?</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
                <h3 class="text-primary">About</h3>
                <h5>
-                  This app uses the Wells-Riley model to quantitatively assess the infection risk from COVID-19. By adjusting the provided variables, you may see the recommended air changes per hour to limit the number of infected persons to less than 0.25 and the amount of time required for 99.9% efficient removal of air contaminants. 
+                  This app uses the Wells-Riley model to quantitatively assess the infection risk from COVID-19. By adjusting the provided variables, you may see the recommended air changes per hour to limit the number of infected persons to less than 0.25 and the amount of time required for 99.9% efficient removal of air contaminants, assuming perfect mixing.
                </h5>
                <h5 class="text-primary">References</h5>
                <p>
@@ -281,10 +318,14 @@
          var N = parseFloat(document.getElementById("inputNumPeople").value);
          var ACH_v = parseFloat(document.getElementById("ventilationVal").textContent);
          var ACH_d = parseFloat(document.getElementById("decompVal").textContent);
-         var eqACH = (-i*p*q*t*variantEff/V)/(Math.log(1-(0.25/N)))-(ACH_v+ACH_d);
-         var time = (-Math.log(1/1000)/eqACH)*60;
-         result.push(eqACH);
-         result.push(time);
+         var eqACH_25 = (-i*p*q*t*variantEff/V)/(Math.log(1-(0.25/N)))-(ACH_v+ACH_d);
+         var eqACH_1 = (-i*p*q*t*variantEff/V)/(Math.log(1-(1.0/N)))-(ACH_v+ACH_d);
+         var time_25 = (-Math.log(1/10000)/eqACH_25)*60;
+         var time_1 = (-Math.log(1/10000)/eqACH_1)*60;
+         result.push(eqACH_25);
+         result.push(eqACH_1);
+         result.push(time_25);
+         result.push(time_1);
          resolve(result);
       });
    }
@@ -292,9 +333,11 @@
    function calcProducts(){
       $("#spinner").removeAttr('hidden');
       calculate().then(function (result) {
-         $("#output_eqACH").text(result[0].toFixed(2));
-         $("#output_time").text(result[1].toFixed(2));
- /*
+         $("#output_eqACH_25").text(result[0].toFixed(2));
+         $("#output_eqACH_1").text(result[1].toFixed(2));
+         $("#output_time_25").text(result[2].toFixed(2));
+         $("#output_time_1").text(result[3].toFixed(2));
+ 
         var roomVol = $("#inputRoomVolume").val()
 
          var bigSize = 0.05488;
@@ -321,17 +364,35 @@
          }
          else var smallNum = 0;
 
-         if(bigNum) $("#bigNum").text(bigNum);
-         else $("#bigNum").text("0");
+         if(bigNum) {
+            $("#bigNum").text(bigNum);
+            $("#bigProd").removeAttr('hidden');
+         }
+         else {
+            $("#bigNum").text("0");
+            $("#bigProd").attr('hidden','true');
+         }
 
-         if(midNum) $("#midNum").text(midNum);
-         else $("#midNum").text("0");
+         if(midNum) {
+            $("#midNum").text(midNum);
+            $("#midProd").removeAttr('hidden');
+         }
+         else {
+            $("#midNum").text("0");
+            $("#midProd").attr('hidden','true');
+         }
 
-         if(smallNum) $("#smallNum").text(smallNum);
-         else $("#smallNum").text("0");
+         if(smallNum) {
+            $("#smallNum").text(smallNum);
+            $("#smallProd").removeAttr('hidden');
+         }
+         else {
+            $("#smallNum").text("0");
+            $("#smallProd").attr('hidden','true');
+         }
 
          $("#totaleqEach").text((bigEACH*bigNum+midEACH*midNum+smallEACH*smallNum).toFixed(2));
-*/
+
          $("#spinner").attr('hidden','true');
       })
    }
