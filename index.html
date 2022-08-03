@@ -11,6 +11,7 @@
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <script src="data.js" ></script>
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@200&family=Poppins:wght@200&family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet"></head>
@@ -25,13 +26,13 @@
             <div class="border bg-white rounded px-4 py-2">
                <h3>Model Parameters</h3>
                <div class="mb-2 row">
-                  <label for="inputNumInfectants" class="col-auto text-secondary col-form-label-sm text-uppercase"># Infectants</label>
+                  <label for="inputNumInfectants" class="col-auto text-secondary col-form-label-sm text-uppercase">Number of Infectants</label>
                   <div class="col-3">
                      <input type="number" value=1 id="inputNumInfectants" class="form-control form-control-sm input">
                   </div>
                </div>
                <div class="mb-2 row">
-                  <label for="inputNumPeople" class="col-auto text-secondary col-form-label-sm text-uppercase"># People in Room</label>
+                  <label for="inputNumPeople" class="col-auto text-secondary col-form-label-sm text-uppercase">Number of People in Room</label>
                   <div class="col-3">
                      <input type="number" value=10 id="inputNumPeople" class="form-control form-control-sm input">
                   </div>
@@ -43,10 +44,23 @@
                   </div>
                </div>
                <div class="mb-2 row">
-                  <label for="inputRoomVolume" class="col-auto text-secondary col-form-label-sm text-uppercase">Room Volume (<span class="text-lowercase">m<sup>3</sup>)</span></label>
+                  <label for="inputRoomArea" class="col-auto text-secondary col-form-label-sm text-uppercase">Room Area (<span class="text-lowercase">m<sup>2</sup>)</span></label>
                   <div class="col-3">
-                     <input type="number" value=80 id="inputRoomVolume" class="form-control form-control-sm input">
+                     <input type="number" value=30 id="inputRoomArea" class="form-control form-control-sm input">
                   </div>
+               </div>
+               <div class="mb-2 row">
+                  <label for="inputRoomHeight" class="col-auto text-secondary col-form-label-sm text-uppercase">Room Height (<span class="text-lowercase">m)</span></label>
+                  <div class="col-3">
+                     <input type="number" value=3 id="inputRoomHeight" class="form-control form-control-sm input">
+                  </div>
+               </div>
+               <div class="mb-2">
+                  <label for="pathogenSelect" class="text-secondary col-form-label-sm text-uppercase">
+                     Pathogen:
+                  </label>
+                  <select id="pathogenSelect" class="form-select form-select-sm input">
+                  </select>
                </div>
                <div class="mb-2">
                   <label for="breathRateSelect" class="text-secondary col-form-label-sm text-uppercase">
@@ -66,7 +80,7 @@
                   </select>
                   <input disabled id="quantaProdRange" type="range" min="1" max="420" value="0.5" step="0.1" class="form-range mt-2 input">
                </div>
-               <div class="mb-2">
+               <div class="mb-2" id="quantaEffectSection">
                   <label for="quantaEffectSelect" class="text-secondary col-form-label-sm text-uppercase">
                      Variant effect: <span class="text-primary text-lowercase">x<span id="quantaEffectVal">1</span></span>
                   </label>
@@ -94,42 +108,65 @@
          </div>
          <div class="col-md-7">
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3 mb-3">
+               <h4>
+                  The amount of sustainable equivalent air changes for infection rate R<0.25 and R<1 is below along with 99.99% disinfection time:<br>
+               </h4>
                <h5>
-                  Required sustainable eqACh for R<0.25 is <span id='output_eqACH_25' class="text-primary"></span>. The amount of time required for removal 99.99% efficiency is <span class="text-primary"><span id='output_time_25'></span> minutes.</span><br>
-                  Required sustainable eqACh for R<1.0 is <span id='output_eqACH_1' class="text-primary"></span>. The amount of time required for removal 99.99% efficiency is <span class="text-primary"><span id='output_time_1'></span> minutes.</span>
-               </h5>
+                  R<0.25: <span id='output_eqACH_25' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_25'></span> minutes</span> for 99.99% air disinfection.<br>
+                  R<1: <span id='output_eqACH_1' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_1'></span> minutes</span> for 99.99% air disinfection.
+               </h5>      
             </div>
             <div class="border bg-white rounded px-4 pt-4 pb-3 mb-3">
                <h3 class="text-primary">Recommended Products</h3>
                <h5 class="text-secondary">Total eqEACH: <span class="text-secondary" id="totaleqEach"></span></h5>
-               <div class="row">
-                  <div id="bigProd" class="col-sm-4">
+               <div class="row mb-3">
+                  <div id="ceilProd" class="mb-3 col-sm-6">
                     <div class="card">
-                     <img src="https://via.placeholder.com/200x150" class="card-img-top" alt="...">
+                     <img src="https://www.assets.signify.com/is/image/Signify/806976ddf130466dbaa8ace8007c269b?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
                       <div class="card-body">
-                        <h5 class="card-title">Big (Product name?)</h5>
+                        <h5 class="card-title">Ceiling-Mounted Upper-Air</h5>
+                        <p class="card-text">Number of devices: <span class="text-secondary" id="ceilNum"></span></p>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-cm" class="btn btn-primary">Link to product</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="wallProd" class="mb-3 col-sm-6">
+                    <div class="card">
+                     <img src="https://www.assets.signify.com/is/image/PhilipsLighting/36081ab751e3405dbc6aac7100d252ef?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Wall-Mounted Upper-Air</h5>
+                        <p class="card-text">Number of devices: <span class="text-secondary" id="wallNum"></span></p>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-wall-mounted#p-image-1" class="btn btn-primary">Link to product</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="bigProd" class="mb-3 col-sm-6">
+                    <div class="card">
+                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Air Disinfection Unit: Big</h5>
                         <p class="card-text">Number of devices: <span class="text-secondary" id="bigNum"></span></p>
-                        <a href="#" class="btn btn-primary">Link to product?</a>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
                       </div>
                     </div>
                   </div>
-                  <div id="midProd" class="col-sm-4">
+                  <div id="midProd" class="col-sm-6">
                     <div class="card">
-                     <img src="https://via.placeholder.com/200x150" class="card-img-top" alt="...">
+                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
                       <div class="card-body">
-                        <h5 class="card-title">Mid (Product name?)</h5>
+                        <h5 class="card-title">Air Disinfection Unit: Medium</h5>
                         <p class="card-text">Number of devices: <span class="text-secondary" id="midNum"></span></p>
-                        <a href="#" class="btn btn-primary">Link to product?</a>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
                       </div>
                     </div>
                   </div>
-                  <div id="smallProd" class="col-sm-4">
+                  <div id="smallProd" class="col-sm-6">
                     <div class="card">
-                     <img src="https://via.placeholder.com/200x150" class="card-img-top" alt="...">
+                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
                       <div class="card-body">
-                        <h5 class="card-title">Sm (Product name?)</h5>
+                        <h5 class="card-title">Air Disinfection Unit: Small</h5>
                         <p class="card-text">Number of devices: <span class="text-secondary" id="smallNum"></span></p>
-                        <a href="#" class="btn btn-primary">Link to product?</a>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
                       </div>
                     </div>
                   </div>
@@ -155,120 +192,6 @@
    </main>
    <script>
    (function() {
-      data={
-         "breathRate": [
-            {
-               default: 2
-            },
-            {
-               name: "Breathing",
-               value: 0.5
-            },
-            {
-               name: "Speaking",
-               value: 0.75
-            },
-            {
-               name: "Singing",
-               value: 1.0
-            }
-         ],
-         "quantaProd": [
-            {
-               default: 6
-            },
-            {
-               name: "Resting - Oral breathing",
-               value: 2
-            },
-            {
-               name: "Resting - Speaking",
-               value: 9.4
-            },
-            {
-               name: "Resting - Loudly speaking",
-               value: 60.5
-            },
-            {
-               name: "Resting - Oral breathing",
-               value: 2.3
-            },
-            {
-               name: "Standing - Speaking",
-               value: 11.4
-            },
-            {
-               name: "Standing - Loudly speaking",
-               value: 65.1
-            },
-            {
-               name: "Light exercise - Oral breathing",
-               value: 5.6
-            },
-            {
-               name: "Light exercise - Speaking",
-               value: 26.3
-            },
-            {
-               name: "Light exercise - Loudly speaking",
-               value: 170
-            },
-            {
-               name: "Heavy exercise - Oral breathing",
-               value: 13.5
-            },
-            {
-               name: "Heavy exercise - Speaking",
-               value: 63.1
-            },
-            {
-               name: "Heavy exercise - Loudly speaking",
-               value: 408
-            }
-         ],
-         "quantaEffect": [
-            {
-               default: 1
-            },
-            {
-               name: "Wildtype",
-               value: 1
-            },
-            {
-               name: "California",
-               value: 1.2
-            },
-            {
-               name: "UK",
-               value: 1.5
-            },
-            {
-               name: "Delta",
-               value: 2
-            }
-         ],
-         "ventilation": [
-            {
-               default: 1
-            },
-            {
-               name: "Closed windows",
-               value: 0.3
-            },
-            {
-               name: "Open windows",
-               value: 2.0
-            },
-            {
-               name: "Mechanical ventilation",
-               value: 3.0
-            },
-            {
-               name: "Open windows with fans",
-               value: 6.0
-            }
-         ]
-      };
       $.each(data, function(key, value) {
          var defaultKey=1;
          $.each(data[key], function(i, f) {
@@ -295,6 +218,42 @@
             }
          });
       });
+      
+      $.each(pathogen, function(i, f) {
+         var option = "<option value='" + i + "'>" + f.name + "</option>"
+         $("#pathogenSelect").append(option);
+      });
+      $("#pathogenSelect").on("change", function() {
+         if ($("#pathogenSelect").val()==0) {
+            $("#quantaEffectSection").removeAttr('hidden');
+            values = pathogen[$("#pathogenSelect").val()].data;
+            option = "<option value='" + values.resting + "' selected>" + "Resting - Oral breathing</option>"
+            $(option).insertBefore("#quantaProdCustom");
+            option = "<option value='" + values.activity + "'>" + "Light exercise - Speaking</option>"
+            $(option).insertBefore("#quantaProdCustom");
+            option = "<option value='" + values.activity2 + "'>" + "Light exercise - Loudly speaking</option>"
+            $(option).insertBefore("#quantaProdCustom");
+            option = "<option value='" + values.heavyactivity + "'>" + "Heavy exercise - Oral breathing</option>"
+            $(option).insertBefore("#quantaProdCustom");
+            $("#quantaProdVal").text(values.resting)
+         }
+         else {
+            $("#quantaEffectSection").attr('hidden','true');
+            $("#quantaEffectSelect").val("1");
+            $("#quantaEffectVal").text("1");
+            $("#quantaProdSelect").empty();
+            option="<option id='quantaProdCustom' value='custom'>Custom</option>";
+            $("#quantaProdSelect").append(option);
+            values = pathogen[$("#pathogenSelect").val()].data;
+            option = "<option value='" + values.resting + "' selected>" + "Resting - Oral breathing</option>"
+            $(option).insertBefore("#quantaProdCustom");
+            option = "<option value='" + values.standing + "'>" + "Standing - Speaking</option>"
+            $(option).insertBefore("#quantaProdCustom");
+            option = "<option value='" + values.activity + "'>" + "Light exercise - Loudly speaking</option>"
+            $(option).insertBefore("#quantaProdCustom");
+            $("#quantaProdVal").text(values.resting)
+         }
+      });
       const decompVal=document.getElementById("decompVal");
       const decompRange=document.getElementById("decompRange");
       decompRange.addEventListener("input",()=>{
@@ -314,7 +273,7 @@
          var q = parseFloat(document.getElementById("quantaProdVal").textContent);
          var t = parseFloat(document.getElementById("inputExposureTime").value);
          var variantEff = parseFloat(document.getElementById("quantaEffectVal").textContent);
-         var V = parseFloat(document.getElementById("inputRoomVolume").value);
+         var V = parseFloat(document.getElementById("inputRoomHeight").value)*parseFloat(document.getElementById("inputRoomArea").value);
          var N = parseFloat(document.getElementById("inputNumPeople").value);
          var ACH_v = parseFloat(document.getElementById("ventilationVal").textContent);
          var ACH_d = parseFloat(document.getElementById("decompVal").textContent);
@@ -338,31 +297,50 @@
          $("#output_time_25").text(result[2].toFixed(2));
          $("#output_time_1").text(result[3].toFixed(2));
  
-        var roomVol = $("#inputRoomVolume").val()
+         var roomVol = parseFloat($("#inputRoomHeight").val())*parseFloat($("#inputRoomArea").val());
 
          var bigSize = 0.05488;
          var midSize = 0.030926;
          var smallSize = 0.00867;
+         var upperEACH = 18;
          var bigEACH = (380/1.699)/(roomVol-bigSize);
          var midEACH = (220/1.699)/(roomVol-midSize);
          var smallEACH = (65/1.699)/(roomVol-smallSize);
+         var upperNum = 0;
 
          var remainderEACH = result[0];
          
+         if (bigEACH<=18 && remainderEACH>=18) {
+            upperNum = Math.floor(remainderEACH/18);
+            remainderEACH = remainderEACH - upperNum*upperEACH;
+         }
          if(remainderEACH>=bigEACH){
             var bigNum = Math.floor(remainderEACH/bigEACH);
             remainderEACH = remainderEACH - bigNum*bigEACH;
          }
          else var bigNum = 0;
+         if (midEACH<=18 && bigEACH>18 && remainderEACH>=18) {
+            upperNum = Math.floor(remainderEACH/18);
+            remainderEACH = remainderEACH - upperNum*upperEACH;
+         }
          if(remainderEACH>=midEACH){
             var midNum = Math.floor(remainderEACH/midEACH);
             remainderEACH = remainderEACH - midNum*midEACH;
          }
          else var midNum = 0;
-         if(remainderEACH>0){
+         if (smallEACH<=18 && midEACH>18 && remainderEACH>=18) {
+            upperNum = Math.floor(remainderEACH/18);
+            remainderEACH = remainderEACH - upperNum*upperEACH;
+         }
+         if(remainderEACH>smallEACH){
             var smallNum = Math.ceil(remainderEACH/smallEACH);
+            remainderEACH = remainderEACH - smallNum*smallEACH;
          }
          else var smallNum = 0;
+         if (smallEACH>18 && remainderEACH>=18) {
+            upperNum = Math.floor(remainderEACH/18);
+            remainderEACH = remainderEACH - upperNum*upperEACH;
+         }
 
          if(bigNum) {
             $("#bigNum").text(bigNum);
@@ -391,7 +369,24 @@
             $("#smallProd").attr('hidden','true');
          }
 
-         $("#totaleqEach").text((bigEACH*bigNum+midEACH*midNum+smallEACH*smallNum).toFixed(2));
+         if(upperNum) {
+            if($("#inputRoomHeight").val()>=2.5){
+               $("#ceilNum").text(upperNum);
+               $("#ceilProd").removeAttr('hidden');
+               $("#wallProd").attr('hidden','true');
+            }
+            else{
+               $("#wallNum").text(upperNum);
+               $("#wallProd").removeAttr('hidden');
+               $("#ceilProd").attr('hidden','true');
+            }
+         }
+         else {
+            $("#ceilProd").attr('hidden','true');
+            $("#wallProd").attr('hidden','true');
+         }
+
+         $("#totaleqEach").text((bigEACH*bigNum+midEACH*midNum+smallEACH*smallNum+18*upperNum).toFixed(2));
 
          $("#spinner").attr('hidden','true');
       })
