@@ -11,6 +11,8 @@
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/helpers.esm.js" integrity="sha512-k1l60wcqxrkxs0F9M/sCgvBepWeLTIyc1Od+wN5tC0VhsLgksryon9jdB73d9CXi2E5bJA1wxl4CuPsRDWwadw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="data.js" ></script>
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +25,7 @@
       </h1>
       <div class="row align-items-start mx-3">
          <div class="col-md-5">
-            <div class="border bg-white rounded px-4 py-2">
+            <div class="border bg-white rounded px-4 py-2 mb-3">
                <h3>Model Parameters</h3>
                <div class="mb-2 row">
                   <label for="inputNumInfectants" class="col-auto text-secondary col-form-label-sm text-uppercase">Number of Infectants</label>
@@ -105,73 +107,6 @@
                   <input id="decompRange" type="range" min="0.0" max="1.0" value="0.11" step="0.01" class="form-range mt-2 input">
                </div>
             </div>
-         </div>
-         <div class="col-md-7">
-            <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3 mb-3">
-               <h4>
-                  The amount of sustainable equivalent air changes for infection rate R<0.25 and R<1 is below along with 99.99% disinfection time:<br>
-               </h4>
-               <h5>
-                  R<0.25: <span id='output_eqACH_25' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_25'></span> minutes</span> for 99.99% air disinfection.<br>
-                  R<1: <span id='output_eqACH_1' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_1'></span> minutes</span> for 99.99% air disinfection.
-               </h5>      
-            </div>
-            <div class="border bg-white rounded px-4 pt-4 pb-3 mb-3">
-               <h3 class="text-primary">Recommended Products</h3>
-               <h5 class="text-secondary">Total eqEACH: <span class="text-secondary" id="totaleqEach"></span></h5>
-               <div class="row mb-3">
-                  <div id="ceilProd" class="mb-3 col-sm-6">
-                    <div class="card">
-                     <img src="https://www.assets.signify.com/is/image/Signify/806976ddf130466dbaa8ace8007c269b?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Ceiling-Mounted Upper-Air</h5>
-                        <p class="card-text">Number of devices: <span class="text-secondary" id="ceilNum"></span></p>
-                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-cm" class="btn btn-primary">Link to product</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="wallProd" class="mb-3 col-sm-6">
-                    <div class="card">
-                     <img src="https://www.assets.signify.com/is/image/PhilipsLighting/36081ab751e3405dbc6aac7100d252ef?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Wall-Mounted Upper-Air</h5>
-                        <p class="card-text">Number of devices: <span class="text-secondary" id="wallNum"></span></p>
-                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-wall-mounted#p-image-1" class="btn btn-primary">Link to product</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="bigProd" class="mb-3 col-sm-6">
-                    <div class="card">
-                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Air Disinfection Unit: Big</h5>
-                        <p class="card-text">Number of devices: <span class="text-secondary" id="bigNum"></span></p>
-                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="midProd" class="col-sm-6">
-                    <div class="card">
-                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Air Disinfection Unit: Medium</h5>
-                        <p class="card-text">Number of devices: <span class="text-secondary" id="midNum"></span></p>
-                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="smallProd" class="col-sm-6">
-                    <div class="card">
-                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">Air Disinfection Unit: Small</h5>
-                        <p class="card-text">Number of devices: <span class="text-secondary" id="smallNum"></span></p>
-                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
                <h3 class="text-primary">About</h3>
                <h5>
@@ -183,6 +118,95 @@
                   Loomans, <a href="https://www.rehva.eu/rehva-journal/chapter/calculating-the-risk-of-infection" target="_blank">Calculating the risk of infection</a><br>
                   G. Buonanno, L. Morawska, L. Stabile, <a href="https://doi.org/10.1016/j.envint.2020.106112" target="_blank">Quantitative assessment of the risk of airborne transmission of SARS-CoV-2 infection: Prospective and retrospective applications</a>
                </p>
+            </div>
+         </div>
+         <div class="col-md-7">
+            <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3 mb-3">
+               <h4 id="negativeError">
+                  The model cannot run with the given parameters.
+               </h4>
+               <div id="resultOutput">
+                  <h4>
+                     The amount of sustainable equivalent air changes for infection rate R<0.25 and R<1 is below along with 99.99% disinfection time:<br>
+                  </h4>
+                  <h5>
+                     R<0.25: <span id='output_eqACH_25' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_25'></span> minutes</span> for 99.99% air disinfection.<br>
+                     R<1: <span id='output_eqACH_1' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_1'></span> minutes</span> for 99.99% air disinfection.
+                  </h5> 
+               </div>     
+            </div>
+            <div class="border bg-white rounded px-4 pt-4 pb-3 mb-3">
+               <h3 class="text-primary">Recommended Products</h3>
+               <div class="row mb-3">
+                  <div id="ceilProd" class="mb-3 col-sm-6">
+                    <div class="card">
+                     <img src="https://www.assets.signify.com/is/image/Signify/806976ddf130466dbaa8ace8007c269b?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Ceiling-Mounted Upper-Air</h5>
+                        <p class="card-text">
+                           Number of devices: <span class="text-secondary" id="ceilNum"></span><br>
+                           Total eqEACH: <span class="text-secondary" id="ceilEACH"></span>
+                        </p>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-cm" class="btn btn-primary">Link to product</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="wallProd" class="mb-3 col-sm-6">
+                    <div class="card">
+                     <img src="https://www.assets.signify.com/is/image/PhilipsLighting/36081ab751e3405dbc6aac7100d252ef?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Wall-Mounted Upper-Air</h5>
+                        <p class="card-text">
+                           Number of devices: <span class="text-secondary" id="wallNum"></span><br>
+                           Total eqEACH: <span class="text-secondary" id="wallEACH"></span>
+                        </p>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-wall-mounted#p-image-1" class="btn btn-primary">Link to product</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="bigProd" class="mb-3 col-sm-6">
+                    <div class="card">
+                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Air Disinfection Unit: Big</h5>
+                        <p class="card-text">
+                           Number of devices: <span class="text-secondary" id="bigNum"></span><br>
+                           Total eqEACH: <span class="text-secondary" id="bigEACH"></span>
+                        </p>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="midProd" class="col-sm-6">
+                    <div class="card">
+                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Air Disinfection Unit: Medium</h5>
+                        <p class="card-text">
+                           Number of devices: <span class="text-secondary" id="midNum"></span><br>
+                           Total eqEACH: <span class="text-secondary" id="midEACH"></span>
+                        </p>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="smallProd" class="col-sm-6">
+                    <div class="card">
+                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h5 class="card-title">Air Disinfection Unit: Small</h5>
+                        <p class="card-text">
+                           Number of devices: <span class="text-secondary" id="smallNum"></span><br>
+                           Total eqEACH: <span class="text-secondary" id="smallEACH"></span>
+                        </p>
+                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
+               <canvas id="myChart" width="400" height="300"></canvas>
             </div>
             <div id="spinner" hidden class="spinner-border" role="status">
                <span class="visually-hidden">Loading...</span>
@@ -281,6 +305,56 @@
          var eqACH_1 = (-i*p*q*t*variantEff/V)/(Math.log(1-(1.0/N)))-(ACH_v+ACH_d);
          var time_25 = (-Math.log(1/10000)/eqACH_25)*60;
          var time_1 = (-Math.log(1/10000)/eqACH_1)*60;
+
+         if (eqACH_1<0 || eqACH_25<0) {
+            $("#negativeError").removeAttr('hidden');
+            $("#resultOutput").attr('hidden','true');
+         }
+         else {
+            $("#resultOutput").removeAttr('hidden');
+            $("#negativeError").attr('hidden','true');
+         }
+
+         const ctx = document.getElementById('myChart');
+         Chart.helpers.each(Chart.instances, function(instance){
+            instance.destroy();
+         });
+         const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+               labels: [...Array(26).keys()],
+               datasets: [{
+                  label: '',
+                  data: Array.from(Array(26), (_, index) => (1-Math.exp((-i*p*q*t*variantEff/V)/(ACH_v+ACH_d+index)))),
+                  fill: false,
+                  borderColor: 'rgb(75, 192, 192)',
+                  tension: 0.6
+               }]
+            },
+            options: {
+               plugins: {
+                  legend: {
+                     display: false
+                  },
+               },
+               scales: {
+                  y: {
+                     beginAtZero: true,
+                     title: {
+                        display: true,
+                        text: "Number of people infected"
+                     }
+                  },
+                  x: {
+                     title: {
+                        display: true,
+                        text: "Additional eqEACH"
+                     }
+                  }
+               }
+            }
+         });
+
          result.push(eqACH_25);
          result.push(eqACH_1);
          result.push(time_25);
@@ -307,86 +381,38 @@
          var midEACH = (220/1.699)/(roomVol-midSize);
          var smallEACH = (65/1.699)/(roomVol-smallSize);
          var upperNum = 0;
+         var totalEACH = result[0];
 
-         var remainderEACH = result[0];
-         
-         if (bigEACH<=18 && remainderEACH>=18) {
-            upperNum = Math.floor(remainderEACH/18);
-            remainderEACH = remainderEACH - upperNum*upperEACH;
-         }
-         if(remainderEACH>=bigEACH){
-            var bigNum = Math.floor(remainderEACH/bigEACH);
-            remainderEACH = remainderEACH - bigNum*bigEACH;
-         }
-         else var bigNum = 0;
-         if (midEACH<=18 && bigEACH>18 && remainderEACH>=18) {
-            upperNum = Math.floor(remainderEACH/18);
-            remainderEACH = remainderEACH - upperNum*upperEACH;
-         }
-         if(remainderEACH>=midEACH){
-            var midNum = Math.floor(remainderEACH/midEACH);
-            remainderEACH = remainderEACH - midNum*midEACH;
-         }
-         else var midNum = 0;
-         if (smallEACH<=18 && midEACH>18 && remainderEACH>=18) {
-            upperNum = Math.floor(remainderEACH/18);
-            remainderEACH = remainderEACH - upperNum*upperEACH;
-         }
-         if(remainderEACH>smallEACH){
-            var smallNum = Math.ceil(remainderEACH/smallEACH);
-            remainderEACH = remainderEACH - smallNum*smallEACH;
-         }
-         else var smallNum = 0;
-         if (smallEACH>18 && remainderEACH>=18) {
-            upperNum = Math.floor(remainderEACH/18);
-            remainderEACH = remainderEACH - upperNum*upperEACH;
-         }
+         if($("#inputRoomHeight").val()>=2.5){
+            upperNum = Math.ceil(totalEACH/upperEACH);
+            var upperTotal = upperNum * upperEACH;
 
-         if(bigNum) {
-            $("#bigNum").text(bigNum);
-            $("#bigProd").removeAttr('hidden');
-         }
-         else {
-            $("#bigNum").text("0");
-            $("#bigProd").attr('hidden','true');
-         }
-
-         if(midNum) {
-            $("#midNum").text(midNum);
-            $("#midProd").removeAttr('hidden');
-         }
-         else {
-            $("#midNum").text("0");
-            $("#midProd").attr('hidden','true');
-         }
-
-         if(smallNum) {
-            $("#smallNum").text(smallNum);
-            $("#smallProd").removeAttr('hidden');
-         }
-         else {
-            $("#smallNum").text("0");
-            $("#smallProd").attr('hidden','true');
-         }
-
-         if(upperNum) {
-            if($("#inputRoomHeight").val()>=2.5){
-               $("#ceilNum").text(upperNum);
-               $("#ceilProd").removeAttr('hidden');
-               $("#wallProd").attr('hidden','true');
-            }
-            else{
-               $("#wallNum").text(upperNum);
-               $("#wallProd").removeAttr('hidden');
-               $("#ceilProd").attr('hidden','true');
-            }
+            $("#ceilNum").text(upperNum);
+            $("#wallNum").text(upperNum);
+            $("#ceilEACH").text(upperTotal);
+            $("#wallEACH").text(upperTotal);
+            $("#ceilProd").removeAttr('hidden');
+            $("#wallProd").removeAttr('hidden');
          }
          else {
             $("#ceilProd").attr('hidden','true');
             $("#wallProd").attr('hidden','true');
          }
 
-         $("#totaleqEach").text((bigEACH*bigNum+midEACH*midNum+smallEACH*smallNum+18*upperNum).toFixed(2));
+         var bigNum = Math.ceil(totalEACH/bigEACH);
+         var bigTotal = bigNum * bigEACH;
+         $("#bigNum").text(bigNum);
+         $("#bigEACH").text(bigTotal.toFixed(2));
+
+         var midNum = Math.ceil(totalEACH/midEACH);
+         var midTotal = midNum * midEACH;
+         $("#midNum").text(midNum);
+         $("#midEACH").text(midTotal.toFixed(2));
+
+         var smallNum = Math.ceil(totalEACH/smallEACH);
+         var smallTotal = smallNum * smallEACH;
+         $("#smallNum").text(smallNum);
+         $("#smallEACH").text(smallTotal.toFixed(2));
 
          $("#spinner").attr('hidden','true');
       })

@@ -96,27 +96,11 @@ pathogen = [
       }
    },
    {
-      name: "MERS 50%",
-      data: {
-         resting: 0.011,
-         standing: 0.056,
-         activity: 0.96
-      }
-   },
-   {
       name: "MERS 95%",
       data: {
          resting: 4.7,
          standing: 24,
          activity: 410
-      }
-   },
-   {
-      name: "TB (on treatment) 50%",
-      data: {
-         resting: 0.02,
-         standing: 0.098,
-         activity: 1.7
       }
    },
    {
@@ -128,27 +112,11 @@ pathogen = [
       }
    },
    {
-      name: "Influenza (50%)",
-      data: {
-         resting: 0.035,
-         standing: 0.17,
-         activity: 3
-      }
-   },
-   {
       name: "Influenza (95%)",
       data: {
          resting: 0.84,
          standing: 4.1,
          activity: 72
-      }
-   },
-   {
-      name: "Coxsackievirus (50%)",
-      data: {
-         resting: 0.062,
-         standing: 0.31,
-         activity: 5.2
       }
    },
    {
@@ -160,27 +128,11 @@ pathogen = [
       }
    },
    {
-      name: "Rhinovirus (50%)",
-      data: {
-         resting: 0.21,
-         standing: 1,
-         activity: 18
-      }
-   },
-   {
       name: "Rhinovirus (95%)",
       data: {
          resting: 4.9,
          standing: 20,
          activity: 420
-      }
-   },
-   {
-      name: "TB (untreated) (50%)",
-      data: {
-         resting: 0.62,
-         standing: 3.1,
-         activity: 52
       }
    },
    {
@@ -192,27 +144,11 @@ pathogen = [
       }
    },
    {
-      name: "Adenovirus (50%)",
-      data: {
-         resting: 0.78,
-         standing: 3.9,
-         activity: 66
-      }
-   },
-   {
       name: "Adenovirus (95%)",
       data: {
          resting: 28,
          standing: 140,
          activity: 2400
-      }
-   },
-   {
-      name: "Measles (50%)",
-      data: {
-         resting: 3.1,
-         standing: 15,
-         activity: 260
       }
    },
    {
