@@ -108,6 +108,10 @@
                </div>
             </div>
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
+               <h3 class="text-primary">Disclaimer</h3>
+               <h5>
+                  Wells-Riley is a mathematical model which factors breathing rates, quanta production, ventilation, and room size into estimating infection risk. The statistical model based on a Poisson distribution can only estimate infection risk, R, which cannot be guaranteed in real life applications. The major limitation of Wells-Riley is the assumption of perfect mixing which is not a reasonable assumption for real life infection transmission. This model is meant to be used for estimation purposes and not definitive calculations. 
+               </h5>
                <h3 class="text-primary">About</h3>
                <h5>
                   This app uses the Wells-Riley model to simulate the infection risk of various airborne pathogens considering ventilation. This calculator determines the number of Philips air disinfection devices required to achieve an infection list of less than 1 and 0.25 persons in addition to a 99.99% pathogen removal efficiency. Please note that this model assumes perfect mixing. 
@@ -122,18 +126,20 @@
          </div>
          <div class="col-md-7">
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3 mb-3">
-               <h4 id="negativeError">
-                  The model cannot run with the given parameters.
+               <h4 id="negative_25">
+                  Additional ventilation in not needed to maintain R<0.25.
                </h4>
-               <div id="resultOutput">
-                  <h4>
-                     The amount of sustainable equivalent air changes for infection rate R<0.25 and R<1 is below along with 99.99% disinfection time:<br>
-                  </h4>
-                  <h5>
+               <h4 id="negative_1">
+                  Additional ventilation in not needed to maintain R<1.0.
+               </h4>
+               <h5>
+                  <span id="result_25">
                      R<0.25: <span id='output_eqACH_25' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_25'></span> minutes</span> for 99.99% air disinfection.<br>
+                  </span>
+                  <span id="result_1">
                      R<1: <span id='output_eqACH_1' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_1'></span> minutes</span> for 99.99% air disinfection.
-                  </h5> 
-               </div>     
+                  </span>
+               </h5> 
             </div>
             <div class="border bg-white rounded px-4 pt-4 pb-3 mb-3">
                <h3 class="text-primary">Recommended Products</h3>
@@ -306,13 +312,23 @@
          var time_25 = (-Math.log(1/10000)/eqACH_25)*60;
          var time_1 = (-Math.log(1/10000)/eqACH_1)*60;
 
-         if (eqACH_1<0 || eqACH_25<0) {
-            $("#negativeError").removeAttr('hidden');
-            $("#resultOutput").attr('hidden','true');
+         if (eqACH_25<=0) {
+            $("#negative_25").removeAttr('hidden');
+            $("#negative_1").attr('hidden','true');
+            $("#result_25").attr('hidden','true');
+            $("#result_1").attr('hidden','true');
+         }
+         else if (eqACH_1<=0) {
+            $("#negative_25").attr('hidden','true');
+            $("#negative_1").removeAttr('hidden');
+            $("#result_25").removeAttr('hidden');
+            $("#result_1").attr('hidden','true');
          }
          else {
-            $("#resultOutput").removeAttr('hidden');
-            $("#negativeError").attr('hidden','true');
+            $("#negative_25").attr('hidden','true');
+            $("#negative_1").attr('hidden','true');
+            $("#result_25").removeAttr('hidden');
+            $("#result_1").removeAttr('hidden');
          }
 
          const ctx = document.getElementById('myChart');
@@ -377,9 +393,9 @@
          var midSize = 0.030926;
          var smallSize = 0.00867;
          var upperEACH = 18;
-         var bigEACH = (380/1.699)/(roomVol-bigSize);
-         var midEACH = (220/1.699)/(roomVol-midSize);
-         var smallEACH = (65/1.699)/(roomVol-smallSize);
+         var bigEACH = (380*0.589)/(roomVol-bigSize);
+         var midEACH = (220*0.589)/(roomVol-midSize);
+         var smallEACH = (65*0.589)/(roomVol-smallSize);
          var upperNum = 0;
          var totalEACH = result[0];
 
