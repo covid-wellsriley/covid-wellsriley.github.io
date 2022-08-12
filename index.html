@@ -129,7 +129,7 @@
             <div class="border bg-white text-secondary rounded px-4 pt-3 pb-3 mb-3">
                <form class="form-inline d-inline">
                   <h4 class="form-group d-inline ">
-                     To maintain an infection probability of less than <input type="number" value="5" min="0.1" max="100" step="0.1" class="form-control form-control-lg ms-2 me-1 d-inline input" id="percentInput">%, <span id="output" class="text-primary"></span> additional sustainable equivalent air changes is required.
+                     To maintain an infection probability of less than <input type="number" value="5" min="0.1" max="100" step="0.1" class="form-control form-control-lg ms-2 me-1 d-inline input" id="percentInput">%, <span id="output" class="text-primary"></span> additional sustainable equivalent air changes is recommended.
                   </h4>
                </form>
             </div>
@@ -198,23 +198,23 @@
                   </div>
                   <div id="smallProd" class="col-sm-6">
                     <div class="card">
-                     <img src="https://www.assets.signify.com/is/image/Signify/4be61c9407d746e2b280aec200aa07dd?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
+                     <img src="https://www.assets.signify.com/is/image/Signify/d018956df59a4c2993d8ad2600e97131?wid=988&hei=870&$pnglarge$" class="card-img-top" alt="...">
                       <div class="card-body">
-                        <h5 class="card-title">Air Disinfection Unit: Small</h5>
+                        <h5 class="card-title">UVCA200</h5>
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="smallNum"></span><br>
                            <span class="text-secondary">
                               Produces <span class="text-primary" id="smallEACH"></span> total eqACH. It will take <span class="text-primary"><span id='smallTime'></span> minutes</span> for 99.99% air disinfection.
                            </span>
                         </p>
-                        <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
+                        <a href="https://www.lighting.philips.com/main/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-floor-standing-air-unit/911401548581_EU/product" class="btn btn-primary">Link to product</a>
                       </div>
                     </div>
                   </div>
                 </div>
             </div>
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
-               <h4 class="text-primary">Probability of Infection on Number of Additional Equivalent Air Changes</h4>
+               <h4 class="text-primary">Probability of Infection to Number of Additional Equivalent Air Changes</h4>
                <canvas id="myChart" width="400" height="300"></canvas>
             </div>
             <div id="spinner" hidden class="spinner-border" role="status">
@@ -327,7 +327,7 @@
                labels: [...Array(26).keys()],
                datasets: [{
                   label: '',
-                  data: Array.from(Array(26), (_, index) => (1-Math.exp((-i*p*q*t*variantEff/V)/(ACH_v+ACH_d+index)))),
+                  data: Array.from(Array(26), (_, index) => 100*(1-Math.exp((-i*p*q*t*variantEff/V)/(ACH_v+ACH_d+index)))),
                   fill: false,
                   borderColor: 'rgb(75, 192, 192)',
                   tension: 0.6
@@ -344,7 +344,7 @@
                      beginAtZero: true,
                      title: {
                         display: true,
-                        text: "Number of people infected"
+                        text: "Probability of Infection (%)"
                      }
                   },
                   x: {
@@ -368,13 +368,10 @@
  
          var roomVol = parseFloat($("#inputRoomHeight").val())*parseFloat($("#inputRoomArea").val());
 
-         var bigSize = 0.05488;
-         var midSize = 0.030926;
-         var smallSize = 0.00867;
          var upperEACH = 18;
-         var bigEACH = (380)/(roomVol-bigSize);
-         var midEACH = (220)/(roomVol-midSize);
-         var smallEACH = (65)/(roomVol-smallSize);
+         var bigEACH = (380)/(roomVol);
+         var midEACH = (220)/(roomVol);
+         var smallEACH = (240)/(roomVol);
          var upperNum = 0;
          var totalEACH = result;
 
@@ -387,8 +384,8 @@
             $("#wallNum").text(upperNum);
             $("#ceilEACH").text(upperTotal);
             $("#wallEACH").text(upperTotal);
-            $("#ceilTime").text(upperTotal);
-            $("#wallTime").text(upperTotal);
+            $("#ceilTime").text(upperTime.toFixed(2));
+            $("#wallTime").text(upperTime.toFixed(2));
             $("#ceilProd").removeAttr('hidden');
             $("#wallProd").removeAttr('hidden');
          }
