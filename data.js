@@ -18,7 +18,7 @@ data={
    ],
    "quantaProd": [
       {
-         default: 3
+         default: 1
       },
       {
          name: "Resting - Oral breathing",
@@ -26,11 +26,11 @@ data={
       },
       {
          name: "Light exercise - Speaking",
-         value: 490
+         value: 76
       },
       {
          name: "Light exercise - Loudly speaking",
-         value: 76
+         value: 490
       },
       {
          name: "Heavy exercise - Oral breathing",

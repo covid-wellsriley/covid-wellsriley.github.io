@@ -110,12 +110,13 @@
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
                <h3 class="text-primary">Disclaimer</h3>
                <h5>
-                  Wells-Riley is a mathematical model which factors breathing rates, quanta production, ventilation, and room size into estimating infection risk. The statistical model based on a Poisson distribution can only estimate infection risk, R, which cannot be guaranteed in real life applications. The major limitation of Wells-Riley is the assumption of perfect mixing which is not a reasonable assumption for real life infection transmission. This model is meant to be used for estimation purposes and not definitive calculations. 
+                  This app uses the theoretical Wells-Riley model for infection risk assessment of airborne diseases in indoor spaces. While this model estimates the probability of infection, it does not guarantee infection risk reduction in real life applications. This model does not account for super-spreaders and immunocompromised people, it also does not consider how the risk of infection increases in closer proximity to an infected person. The Wells-Riley model assumes perfect mixing which assumes constant values for temperature, pressure, and concentration. Therefore, the Wells-Riley model and this app can only be used for estimation as the mathematical model cannot simulate real life scenarios.  
                </h5>
                <h3 class="text-primary">About</h3>
                <h5>
-                  This app uses the Wells-Riley model to simulate the infection risk of various airborne pathogens considering ventilation. This calculator determines the number of Philips air disinfection devices required to achieve an infection list of less than 1 and 0.25 persons in addition to a 99.99% pathogen removal efficiency. Please note that this model assumes perfect mixing. 
-               </h5>
+                  The Wells-Riley model estimates the probability of infection of airborne diseases in an indoor space considering the ventilation of the room. Ventilation of indoor spaces is measured by air changes per hour (ACH), which is the number of times that the total air volume in a room is completely removed and replaced in one hour. The Wells-Riley model stipulates that by increasing the number of air changes per hour in a given room, the probability of infection can be lowered. Please refer to the graph. 
+
+                  This app calculates the number of equivalent air changes (eqACH) produced by Philips Air Disinfection Devices required for a desired estimated probability of infection. In addition, the time for 99.99% pathogen removal efficiency is included.                 </h5>
                <h5 class="text-primary">References</h5>
                <p>
                   Bazant and Bush, <a href="https://www.pnas.org/doi/10.1073/pnas.2018995118" target="_blank">A guideline to limit indoor airborne transmission of COVID-19</a><br>
@@ -125,23 +126,14 @@
             </div>
          </div>
          <div class="col-md-7">
-            <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3 mb-3">
-               <h4 id="negative_25">
-                  Additional ventilation in not needed to maintain R<0.25.
-               </h4>
-               <h4 id="negative_1">
-                  Additional ventilation in not needed to maintain R<1.0.
-               </h4>
-               <h5>
-                  <span id="result_25">
-                     R<0.25: <span id='output_eqACH_25' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_25'></span> minutes</span> for 99.99% air disinfection.<br>
-                  </span>
-                  <span id="result_1">
-                     R<1: <span id='output_eqACH_1' class="text-primary"></span> sustainable equivalent air changes are needed. It will take <span class="text-primary"><span id='output_time_1'></span> minutes</span> for 99.99% air disinfection.
-                  </span>
-               </h5> 
+            <div class="border bg-white text-secondary rounded px-4 pt-3 pb-3 mb-3">
+               <form class="form-inline d-inline">
+                  <h4 class="form-group d-inline ">
+                     To maintain an infection probability of less than <input type="number" value="5" min="0.1" max="100" step="0.1" class="form-control form-control-lg ms-2 me-1 d-inline input" id="percentInput">%, <span id="output" class="text-primary"></span> additional sustainable equivalent air changes is required.
+                  </h4>
+               </form>
             </div>
-            <div class="border bg-white rounded px-4 pt-4 pb-3 mb-3">
+            <div class="border bg-white rounded px-4 pt-2 pb-3 mb-3">
                <h3 class="text-primary">Recommended Products</h3>
                <div class="row mb-3">
                   <div id="ceilProd" class="mb-3 col-sm-6">
@@ -151,7 +143,9 @@
                         <h5 class="card-title">Ceiling-Mounted Upper-Air</h5>
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="ceilNum"></span><br>
-                           Total eqEACH: <span class="text-secondary" id="ceilEACH"></span>
+                           <span class="text-secondary">
+                              Produces <span class="text-primary" id="ceilEACH"></span> total eqACH. It will take <span class="text-primary"><span id='ceilTime'></span> minutes</span> for 99.99% air disinfection.
+                           </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-cm" class="btn btn-primary">Link to product</a>
                       </div>
@@ -164,7 +158,9 @@
                         <h5 class="card-title">Wall-Mounted Upper-Air</h5>
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="wallNum"></span><br>
-                           Total eqEACH: <span class="text-secondary" id="wallEACH"></span>
+                           <span class="text-secondary">
+                              Produces <span class="text-primary" id="wallEACH"></span> total eqACH. It will take <span class="text-primary"><span id='wallTime'></span> minutes</span> for 99.99% air disinfection.
+                           </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-wall-mounted#p-image-1" class="btn btn-primary">Link to product</a>
                       </div>
@@ -177,7 +173,9 @@
                         <h5 class="card-title">Air Disinfection Unit: Big</h5>
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="bigNum"></span><br>
-                           Total eqEACH: <span class="text-secondary" id="bigEACH"></span>
+                           <span class="text-secondary">
+                              Produces <span class="text-primary" id="bigEACH"></span> total eqACH. It will take <span class="text-primary"><span id='bigTime'></span> minutes</span> for 99.99% air disinfection.
+                           </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
                       </div>
@@ -190,7 +188,9 @@
                         <h5 class="card-title">Air Disinfection Unit: Medium</h5>
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="midNum"></span><br>
-                           Total eqEACH: <span class="text-secondary" id="midEACH"></span>
+                           <span class="text-secondary">
+                              Produces <span class="text-primary" id="midEACH"></span> total eqACH. It will take <span class="text-primary"><span id='midTime'></span> minutes</span> for 99.99% air disinfection.
+                           </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
                       </div>
@@ -203,7 +203,9 @@
                         <h5 class="card-title">Air Disinfection Unit: Small</h5>
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="smallNum"></span><br>
-                           Total eqEACH: <span class="text-secondary" id="smallEACH"></span>
+                           <span class="text-secondary">
+                              Produces <span class="text-primary" id="smallEACH"></span> total eqACH. It will take <span class="text-primary"><span id='smallTime'></span> minutes</span> for 99.99% air disinfection.
+                           </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
                       </div>
@@ -212,6 +214,7 @@
                 </div>
             </div>
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
+               <h4 class="text-primary">Probability of Infection on Number of Additional Equivalent Air Changes</h4>
                <canvas id="myChart" width="400" height="300"></canvas>
             </div>
             <div id="spinner" hidden class="spinner-border" role="status">
@@ -307,29 +310,12 @@
          var N = parseFloat(document.getElementById("inputNumPeople").value);
          var ACH_v = parseFloat(document.getElementById("ventilationVal").textContent);
          var ACH_d = parseFloat(document.getElementById("decompVal").textContent);
-         var eqACH_25 = (-i*p*q*t*variantEff/V)/(Math.log(1-(0.25/N)))-(ACH_v+ACH_d);
-         var eqACH_1 = (-i*p*q*t*variantEff/V)/(Math.log(1-(1.0/N)))-(ACH_v+ACH_d);
-         var time_25 = (-Math.log(1/10000)/eqACH_25)*60;
-         var time_1 = (-Math.log(1/10000)/eqACH_1)*60;
+         var desired_prob = parseFloat(document.getElementById("percentInput").value);
+         var eqACH = (-i*p*q*t*variantEff/V)/(Math.log(1-(desired_prob/100)))-(ACH_v+ACH_d);
 
-         if (eqACH_25<=0) {
-            $("#negative_25").removeAttr('hidden');
-            $("#negative_1").attr('hidden','true');
-            $("#result_25").attr('hidden','true');
-            $("#result_1").attr('hidden','true');
-         }
-         else if (eqACH_1<=0) {
-            $("#negative_25").attr('hidden','true');
-            $("#negative_1").removeAttr('hidden');
-            $("#result_25").removeAttr('hidden');
-            $("#result_1").attr('hidden','true');
-         }
-         else {
-            $("#negative_25").attr('hidden','true');
-            $("#negative_1").attr('hidden','true');
-            $("#result_25").removeAttr('hidden');
-            $("#result_1").removeAttr('hidden');
-         }
+         console.log(desired_prob)
+
+         if (eqACH<0) eqACH = 0;
 
          const ctx = document.getElementById('myChart');
          Chart.helpers.each(Chart.instances, function(instance){
@@ -364,28 +350,21 @@
                   x: {
                      title: {
                         display: true,
-                        text: "Additional eqEACH"
+                        text: "Additional eqACH"
                      }
                   }
                }
             }
          });
 
-         result.push(eqACH_25);
-         result.push(eqACH_1);
-         result.push(time_25);
-         result.push(time_1);
-         resolve(result);
+         resolve(eqACH);
       });
    }
 
    function calcProducts(){
       $("#spinner").removeAttr('hidden');
       calculate().then(function (result) {
-         $("#output_eqACH_25").text(result[0].toFixed(2));
-         $("#output_eqACH_1").text(result[1].toFixed(2));
-         $("#output_time_25").text(result[2].toFixed(2));
-         $("#output_time_1").text(result[3].toFixed(2));
+         $("#output").text(result.toFixed(2));
  
          var roomVol = parseFloat($("#inputRoomHeight").val())*parseFloat($("#inputRoomArea").val());
 
@@ -393,20 +372,23 @@
          var midSize = 0.030926;
          var smallSize = 0.00867;
          var upperEACH = 18;
-         var bigEACH = (380*0.589)/(roomVol-bigSize);
-         var midEACH = (220*0.589)/(roomVol-midSize);
-         var smallEACH = (65*0.589)/(roomVol-smallSize);
+         var bigEACH = (380)/(roomVol-bigSize);
+         var midEACH = (220)/(roomVol-midSize);
+         var smallEACH = (65)/(roomVol-smallSize);
          var upperNum = 0;
-         var totalEACH = result[0];
+         var totalEACH = result;
 
          if($("#inputRoomHeight").val()>=2.5){
             upperNum = Math.ceil(totalEACH/upperEACH);
             var upperTotal = upperNum * upperEACH;
+            var upperTime = (-Math.log(1/10000)/upperTotal)*60;
 
             $("#ceilNum").text(upperNum);
             $("#wallNum").text(upperNum);
             $("#ceilEACH").text(upperTotal);
             $("#wallEACH").text(upperTotal);
+            $("#ceilTime").text(upperTotal);
+            $("#wallTime").text(upperTotal);
             $("#ceilProd").removeAttr('hidden');
             $("#wallProd").removeAttr('hidden');
          }
@@ -417,18 +399,24 @@
 
          var bigNum = Math.ceil(totalEACH/bigEACH);
          var bigTotal = bigNum * bigEACH;
+         var bigTime = (-Math.log(1/10000)/bigTotal)*60;
          $("#bigNum").text(bigNum);
          $("#bigEACH").text(bigTotal.toFixed(2));
+         $("#bigTime").text(bigTime.toFixed(2));
 
          var midNum = Math.ceil(totalEACH/midEACH);
          var midTotal = midNum * midEACH;
+         var midTime = (-Math.log(1/10000)/midTotal)*60;
          $("#midNum").text(midNum);
          $("#midEACH").text(midTotal.toFixed(2));
+         $("#midTime").text(midTime.toFixed(2));
 
          var smallNum = Math.ceil(totalEACH/smallEACH);
          var smallTotal = smallNum * smallEACH;
+         var smallTime = (-Math.log(1/10000)/smallTotal)*60;
          $("#smallNum").text(smallNum);
          $("#smallEACH").text(smallTotal.toFixed(2));
+         $("#smallTime").text(smallTime.toFixed(2));
 
          $("#spinner").attr('hidden','true');
       })

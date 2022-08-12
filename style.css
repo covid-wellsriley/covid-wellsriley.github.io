@@ -18,3 +18,14 @@ h1, h2, h3, h4, h5, h6, p {
 .text-gray {
    color: #3C3C41;
 }
+
+#percentInput {
+   width: 90px;
+}
+
+input:invalid {
+   background-color: ivory;
+   border: none;
+   outline: 2px solid red;
+   border-radius: 5px;
+}
