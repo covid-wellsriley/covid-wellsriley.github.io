@@ -117,11 +117,21 @@
 
                   This app calculates the number of equivalent air changes (eqACH) produced by Philips Air Disinfection Devices required for a desired estimated probability of infection. In addition, the time for 99.99% pathogen removal efficiency is included.                 </h5>
                <h5 class="text-primary">References</h5>
-               <p>
-                  Bazant and Bush, <a href="https://www.pnas.org/doi/10.1073/pnas.2018995118" target="_blank">A guideline to limit indoor airborne transmission of COVID-19</a><br>
-                  Loomans, <a href="https://www.rehva.eu/rehva-journal/chapter/calculating-the-risk-of-infection" target="_blank">Calculating the risk of infection</a><br>
-                  G. Buonanno, L. Morawska, L. Stabile, <a href="https://doi.org/10.1016/j.envint.2020.106112" target="_blank">Quantitative assessment of the risk of airborne transmission of SARS-CoV-2 infection: Prospective and retrospective applications</a>
-               </p>
+               <p class="lh-sm"><small>
+                  Buonanno, G., et al. “Quantitative Assessment of the Risk of Airborne Transmission of SARS-COV-2 Infection: Prospective and Retrospective Applications.” <em>Environment International</em>, vol. 145, 2020, https://doi.org/10.1016/j.envint.2020.106112. 
+                  <br>
+                  Guo, Yong, et al. “Assessing and Controlling Infection Risk with Wells-Riley Model and Spatial Flow Impact Factor (SFIF).” <em>Sustainable Cities and Society</em>, vol. 67, 2021, https://doi.org/10.1016/j.scs.2021.102719.  
+                  <br>
+                  Liu, Ying, and Joacim Rocklöv. “The Effective Reproductive Number of the Omicron Variant of SARS-COV-2 Is Several Times Relative to Delta.” <em>Journal of Travel Medicine</em>, vol. 29, no. 3, 2022, https://doi.org/10.1093/jtm/taac037.  
+                  <br>
+                  Mikszewski, Alex, et al. “The Airborne Contagiousness of Respiratory Viruses: A Comparative Analysis and Implications for Mitigation.” <em>Geoscience Frontiers</em>, 2021, https://doi.org/10.1016/j.gsf.2021.101285.  
+                  <br>
+                  Noakes, Catherine J., and P. Andrew Sleigh. “Mathematical Models for Assessing the Role of Airflow on the Risk of Airborne Infection in Hospital Wards.” <em>Journal of The Royal Society Interface</em>, vol. 6, no. suppl_6, 2009, https://doi.org/10.1098/rsif.2009.0305.focus.  
+                  <br>
+                  United States, Department of Health and Human Services, Centers for Disease Control and Prevention. "Guidelines for Environmental Infection Control in Health-Care Facilities" Centers for Disease Control and Prevention, 22 July 2019, https://www.cdc.gov/infectioncontrol/guidelines/environmental/appendix/air.html. 
+                  <br>
+                  Wang, Jianbo, et al. “Modeling the Impact of Vaccination on Covid-19 and Its Delta and Omicron Variants.” <em>Viruses</em>, vol. 14, no. 7, 2022, https://doi.org/10.3390/v14071482. 
+               </small></p>
             </div>
          </div>
          <div class="col-md-7">
@@ -258,14 +268,17 @@
       $("#pathogenSelect").on("change", function() {
          if ($("#pathogenSelect").val()==0) {
             $("#quantaEffectSection").removeAttr('hidden');
+            $("#quantaProdSelect").empty();
+            option="<option id='quantaProdCustom' value='custom'>Custom</option>";
+            $("#quantaProdSelect").append(option);
             values = pathogen[$("#pathogenSelect").val()].data;
             option = "<option value='" + values.resting + "' selected>" + "Resting - Oral breathing</option>"
             $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.activity + "'>" + "Light exercise - Speaking</option>"
+            option = "<option value='" + values.activity + "'>" + "Light activity - Speaking</option>"
             $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.activity2 + "'>" + "Light exercise - Loudly speaking</option>"
+            option = "<option value='" + values.activity2 + "'>" + "Light activity - Loudly speaking</option>"
             $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.heavyactivity + "'>" + "Heavy exercise - Oral breathing</option>"
+            option = "<option value='" + values.heavyactivity + "'>" + "Heavy activity - Oral breathing</option>"
             $(option).insertBefore("#quantaProdCustom");
             $("#quantaProdVal").text(values.resting)
          }
@@ -281,7 +294,7 @@
             $(option).insertBefore("#quantaProdCustom");
             option = "<option value='" + values.standing + "'>" + "Standing - Speaking</option>"
             $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.activity + "'>" + "Light exercise - Loudly speaking</option>"
+            option = "<option value='" + values.activity + "'>" + "Light activity - Loudly speaking</option>"
             $(option).insertBefore("#quantaProdCustom");
             $("#quantaProdVal").text(values.resting)
          }
@@ -367,7 +380,7 @@
  
          var roomVol = parseFloat($("#inputRoomHeight").val())*parseFloat($("#inputRoomArea").val());
 
-         var upperEACH = (1750)/(roomVol);
+         var upperEACH = (2000)/(roomVol);
          var bigEACH = (380)/(roomVol);
          var midEACH = (220)/(roomVol);
          var smallEACH = (240)/(roomVol);
@@ -381,8 +394,8 @@
 
             $("#ceilNum").text(upperNum);
             $("#wallNum").text(upperNum);
-            $("#ceilEACH").text(upperTotal);
-            $("#wallEACH").text(upperTotal);
+            $("#ceilEACH").text(upperTotal.toFixed(2));
+            $("#wallEACH").text(upperTotal.toFixed(2));
             $("#ceilTime").text(upperTime.toFixed(2));
             $("#wallTime").text(upperTime.toFixed(2));
             $("#ceilProd").removeAttr('hidden');

@@ -25,15 +25,15 @@ data={
          value: 5.7
       },
       {
-         name: "Light exercise - Speaking",
+         name: "Light activity - Speaking",
          value: 76
       },
       {
-         name: "Light exercise - Loudly speaking",
+         name: "Light activity - Loudly speaking",
          value: 490
       },
       {
-         name: "Heavy exercise - Oral breathing",
+         name: "Heavy activity - Oral breathing",
          value: 38
       },
    ],
