@@ -115,7 +115,7 @@
                <h5>
                   The Wells-Riley model estimates the probability of infection of airborne diseases in an indoor space considering the ventilation of the room. Ventilation of indoor spaces is measured by air changes per hour (ACH), which is the number of times that the total air volume in a room is completely removed and replaced in one hour. The Wells-Riley model stipulates that by increasing the number of air changes per hour in a given room, the probability of infection can be lowered. Please refer to the graph. 
 
-                  This app calculates the number of equivalent air changes (eqACH) produced by Philips Air Disinfection Devices required for a desired estimated probability of infection. In addition, the time for 99.99% pathogen removal efficiency is included.                 </h5>
+                  This app calculates the number of equivalent air changes (eACH) produced by Philips Air Disinfection Devices required for a desired estimated probability of infection. In addition, the time for 99.99% pathogen removal efficiency is included.                 </h5>
                <h5 class="text-primary">References</h5>
                <p class="lh-sm"><small>
                   Buonanno, G., et al. “Quantitative Assessment of the Risk of Airborne Transmission of SARS-COV-2 Infection: Prospective and Retrospective Applications.” <em>Environment International</em>, vol. 145, 2020, https://doi.org/10.1016/j.envint.2020.106112. 
@@ -138,13 +138,16 @@
             <div class="border bg-white text-secondary rounded px-4 pt-3 pb-3 mb-3">
                <form class="form-inline d-inline">
                   <h4 class="form-group d-inline ">
-                     To maintain an infection probability of less than <input type="number" value="5" min="0.1" max="100" step="0.1" class="form-control form-control-lg ms-2 me-1 d-inline input" id="percentInput">%, <span id="output" class="text-primary"></span> additional sustainable equivalent air changes is recommended*.
+                     To maintain an infection probability of less than <input type="number" value="5" min="0.1" max="100" step="0.1" class="form-control form-control-lg ms-2 me-1 d-inline input" id="percentInput">%, <span id="output" class="text-primary"></span> <span id="outputText">additional sustainable equivalent air changes is recommended*.</span>
                   </h4>
                </form>
             </div>
             <div class="border bg-white rounded px-4 pt-2 pb-3 mb-3">
                <h3 class="text-primary">Recommended Products</h3>
                <div class="row mb-3">
+                  <h4 class="text-secondary" id="noRecommendation">
+                     Recommended eACH for desired infection rate is already achieved.
+                  </h4>
                   <div id="ceilProd" class="mb-3 col-sm-6">
                     <div class="card">
                      <img src="https://www.assets.signify.com/is/image/Signify/806976ddf130466dbaa8ace8007c269b?clipPathE=legacy_path&$pnglarge$" class="card-img-top" alt="...">
@@ -226,9 +229,6 @@
                <h4 class="text-primary">Probability of Infection to Number of Additional Equivalent Air Changes</h4>
                <canvas id="myChart" width="400" height="300"></canvas>
             </div>
-            <div id="spinner" hidden class="spinner-border" role="status">
-               <span class="visually-hidden">Loading...</span>
-             </div>
          </div>
       </div>
    </main>
@@ -325,8 +325,6 @@
          var desired_prob = parseFloat(document.getElementById("percentInput").value);
          var eqACH = (-i*p*q*t*variantEff/V)/(Math.log(1-(desired_prob/100)))-(ACH_v+ACH_d);
 
-         console.log(desired_prob)
-
          if (eqACH<0) eqACH = 0;
 
          const ctx = document.getElementById('myChart');
@@ -374,60 +372,93 @@
    }
 
    function calcProducts(){
-      $("#spinner").removeAttr('hidden');
       calculate().then(function (result) {
-         $("#output").text(result.toFixed(2));
- 
-         var roomVol = parseFloat($("#inputRoomHeight").val())*parseFloat($("#inputRoomArea").val());
+         if(!isNaN(result)){
+            if(result>100){
+               $("#outputText").text("the result is out of working range.");
+               $("#output").text("");
+            }
+            else if(result==0){
+               $("#noRecommendation").removeAttr('hidden');
+               $("#ceilProd").attr('hidden','true');
+               $("#wallProd").attr('hidden','true');
+               $("#smallProd").attr('hidden','true');
+               $("#midProd").attr('hidden','true');
+               $("#bigProd").attr('hidden','true');
+            }
+            else{
+               $("#outputText").text("additional sustainable equivalent air changes is recommended*.");
+               $("#output").text(result.toFixed(2));
+   
+               var roomVol = parseFloat($("#inputRoomHeight").val())*parseFloat($("#inputRoomArea").val());
 
-         var upperEACH = (2000)/(roomVol);
-         var bigEACH = (380)/(roomVol);
-         var midEACH = (220)/(roomVol);
-         var smallEACH = (240)/(roomVol);
-         var upperNum = 0;
-         var totalEACH = result;
+               var upperEACH = (2000)/(roomVol);
+               var bigEACH = (380)/(roomVol);
+               var midEACH = (220)/(roomVol);
+               var smallEACH = (240)/(roomVol);
+               var upperNum = 0;
+               var totalEACH = result;
 
-         if($("#inputRoomHeight").val()>=2.5){
-            upperNum = Math.ceil(totalEACH/upperEACH);
-            var upperTotal = upperNum * upperEACH;
-            var upperTime = (-Math.log(1/10000)/upperTotal)*60;
+               if($("#inputRoomHeight").val()>=2.5){
+                  upperNum = Math.ceil(totalEACH/upperEACH);
 
-            $("#ceilNum").text(upperNum);
-            $("#wallNum").text(upperNum);
-            $("#ceilEACH").text(upperTotal.toFixed(2));
-            $("#wallEACH").text(upperTotal.toFixed(2));
-            $("#ceilTime").text(upperTime.toFixed(2));
-            $("#wallTime").text(upperTime.toFixed(2));
-            $("#ceilProd").removeAttr('hidden');
-            $("#wallProd").removeAttr('hidden');
+                  if(upperNum<10){
+                     var upperTotal = upperNum * upperEACH;
+                     var upperTime = (-Math.log(1/10000)/upperTotal)*60;
+
+                     $("#ceilNum").text(upperNum);
+                     $("#wallNum").text(upperNum);
+                     $("#ceilEACH").text(upperTotal.toFixed(2));
+                     $("#wallEACH").text(upperTotal.toFixed(2));
+                     $("#ceilTime").text(upperTime.toFixed(2));
+                     $("#wallTime").text(upperTime.toFixed(2));
+                     $("#ceilProd").removeAttr('hidden');
+                     $("#wallProd").removeAttr('hidden');
+                  }
+                  else{
+                     $("#ceilProd").attr('hidden','true');
+                     $("#wallProd").attr('hidden','true');
+                  }
+               }
+               else {
+                  $("#ceilProd").attr('hidden','true');
+                  $("#wallProd").attr('hidden','true');
+               }
+
+               var bigNum = Math.ceil(totalEACH/bigEACH);
+               if(bigNum<10){
+                  var bigTotal = bigNum * bigEACH;
+                  var bigTime = (-Math.log(1/10000)/bigTotal)*60;
+                  $("#bigNum").text(bigNum);
+                  $("#bigEACH").text(bigTotal.toFixed(2));
+                  $("#bigTime").text(bigTime.toFixed(2));
+                  $("#bigProd").removeAttr('hidden');
+               }
+               else $("#bigProd").attr('hidden','true');
+
+               var midNum = Math.ceil(totalEACH/midEACH);
+               if(midNum<10){
+                  var midTotal = midNum * midEACH;
+                  var midTime = (-Math.log(1/10000)/midTotal)*60;
+                  $("#midNum").text(midNum);
+                  $("#midEACH").text(midTotal.toFixed(2));
+                  $("#midTime").text(midTime.toFixed(2));
+                  $("#midProd").removeAttr('hidden');
+               }
+               else $("#midProd").attr('hidden','true');
+
+               var smallNum = Math.ceil(totalEACH/smallEACH);
+               if(smallNum<10){
+                  var smallTotal = smallNum * smallEACH;
+                  var smallTime = (-Math.log(1/10000)/smallTotal)*60;
+                  $("#smallNum").text(smallNum);
+                  $("#smallEACH").text(smallTotal.toFixed(2));
+                  $("#smallTime").text(smallTime.toFixed(2));
+                  $("#smallProd").removeAttr('hidden');
+               }
+               else $("#smallProd").attr('hidden','true');
+            }
          }
-         else {
-            $("#ceilProd").attr('hidden','true');
-            $("#wallProd").attr('hidden','true');
-         }
-
-         var bigNum = Math.ceil(totalEACH/bigEACH);
-         var bigTotal = bigNum * bigEACH;
-         var bigTime = (-Math.log(1/10000)/bigTotal)*60;
-         $("#bigNum").text(bigNum);
-         $("#bigEACH").text(bigTotal.toFixed(2));
-         $("#bigTime").text(bigTime.toFixed(2));
-
-         var midNum = Math.ceil(totalEACH/midEACH);
-         var midTotal = midNum * midEACH;
-         var midTime = (-Math.log(1/10000)/midTotal)*60;
-         $("#midNum").text(midNum);
-         $("#midEACH").text(midTotal.toFixed(2));
-         $("#midTime").text(midTime.toFixed(2));
-
-         var smallNum = Math.ceil(totalEACH/smallEACH);
-         var smallTotal = smallNum * smallEACH;
-         var smallTime = (-Math.log(1/10000)/smallTotal)*60;
-         $("#smallNum").text(smallNum);
-         $("#smallEACH").text(smallTotal.toFixed(2));
-         $("#smallTime").text(smallTime.toFixed(2));
-
-         $("#spinner").attr('hidden','true');
       })
    }
 
