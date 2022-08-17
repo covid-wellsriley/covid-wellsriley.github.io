@@ -12,11 +12,11 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/helpers.esm.js" integrity="sha512-k1l60wcqxrkxs0F9M/sCgvBepWeLTIyc1Od+wN5tC0VhsLgksryon9jdB73d9CXi2E5bJA1wxl4CuPsRDWwadw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="data.js" ></script>
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@200&family=Poppins:wght@200&family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet"></head>
+   <script src="script.js" ></script>
 
 <body class="bg-light">
    <main class="container bg-light text-primary pb-5">
@@ -31,12 +31,6 @@
                   <label for="inputNumInfectants" class="col-auto text-secondary col-form-label-sm text-uppercase">Number of Infectants</label>
                   <div class="col-3">
                      <input type="number" value=1 id="inputNumInfectants" class="form-control form-control-sm input">
-                  </div>
-               </div>
-               <div class="mb-2 row">
-                  <label for="inputNumPeople" class="col-auto text-secondary col-form-label-sm text-uppercase">Number of People in Room</label>
-                  <div class="col-3">
-                     <input type="number" value=10 id="inputNumPeople" class="form-control form-control-sm input">
                   </div>
                </div>
                <div class="mb-2 row">
@@ -115,7 +109,7 @@
                <h5>
                   The Wells-Riley model estimates the probability of infection of airborne diseases in an indoor space considering the ventilation of the room. Ventilation of indoor spaces is measured by air changes per hour (ACH), which is the number of times that the total air volume in a room is completely removed and replaced in one hour. The Wells-Riley model stipulates that by increasing the number of air changes per hour in a given room, the probability of infection can be lowered. Please refer to the graph. 
 
-                  This app calculates the number of equivalent air changes (eACH) produced by Philips Air Disinfection Devices required for a desired estimated probability of infection. In addition, the time for 99.99% pathogen removal efficiency is included.                 </h5>
+                  This app calculates the number of equivalent air changes (eqACH) produced by Philips Air Disinfection Devices required for a desired estimated probability of infection. In addition, the time for 99.99% pathogen removal efficiency is included.                 </h5>
                <h5 class="text-primary">References</h5>
                <p class="lh-sm"><small>
                   Buonanno, G., et al. “Quantitative Assessment of the Risk of Airborne Transmission of SARS-COV-2 Infection: Prospective and Retrospective Applications.” <em>Environment International</em>, vol. 145, 2020, https://doi.org/10.1016/j.envint.2020.106112. 
@@ -142,13 +136,13 @@
                   </h4>
                </form>
             </div>
-            <div class="border bg-white rounded px-4 pt-2 pb-3 mb-3">
+            <div class="border bg-white rounded px-4 py-2 mb-3">
                <h3 class="text-primary">Recommended Products</h3>
                <div class="row mb-3">
-                  <h4 class="text-secondary" id="noRecommendation">
+                  <h4 class="text-secondary" id="noRecommendation" hidden>
                      Recommended eqACH for desired infection rate is already achieved.
                   </h4>
-                  <h4 class="text-secondary" id="outOfRange">
+                  <h4 class="text-secondary" id="outOfRange" hidden>
                      Result is out of working range.
                   </h4>
                   <div id="ceilProd" class="mb-3 col-sm-6">
@@ -159,7 +153,7 @@
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="ceilNum"></span><br>
                            <span class="text-secondary">
-                              Produces <span class="text-primary" id="ceilEACH"></span> total eqACH. It will take <span class="text-primary"><span id='ceilTime'></span> minutes</span> for 99.99% air disinfection.
+                              Produces <span class="text-primary" id="ceilEqACH"></span> total eqACH. It will take <span class="text-primary"><span id='ceilTime'></span> minutes</span> for 99.99% air disinfection.
                            </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-cm" class="btn btn-primary">Link to product</a>
@@ -174,7 +168,7 @@
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="wallNum"></span><br>
                            <span class="text-secondary">
-                              Produces <span class="text-primary" id="wallEACH"></span> total eqACH. It will take <span class="text-primary"><span id='wallTime'></span> minutes</span> for 99.99% air disinfection.
+                              Produces <span class="text-primary" id="wallEqACH"></span> total eqACH. It will take <span class="text-primary"><span id='wallTime'></span> minutes</span> for 99.99% air disinfection.
                            </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-upper-air-wall-mounted#p-image-1" class="btn btn-primary">Link to product</a>
@@ -189,7 +183,7 @@
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="bigNum"></span><br>
                            <span class="text-secondary">
-                              Produces <span class="text-primary" id="bigEACH"></span> total eqACH. It will take <span class="text-primary"><span id='bigTime'></span> minutes</span> for 99.99% air disinfection.
+                              Produces <span class="text-primary" id="bigEqACH"></span> total eqACH. It will take <span class="text-primary"><span id='bigTime'></span> minutes</span> for 99.99% air disinfection.
                            </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
@@ -204,7 +198,7 @@
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="midNum"></span><br>
                            <span class="text-secondary">
-                              Produces <span class="text-primary" id="midEACH"></span> total eqACH. It will take <span class="text-primary"><span id='midTime'></span> minutes</span> for 99.99% air disinfection.
+                              Produces <span class="text-primary" id="midEqACH"></span> total eqACH. It will take <span class="text-primary"><span id='midTime'></span> minutes</span> for 99.99% air disinfection.
                            </span>
                         </p>
                         <a href="https://www.lighting.philips.com.sg/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-air-unit-g2#p-image-6" class="btn btn-primary">Link to product</a>
@@ -219,7 +213,7 @@
                         <p class="card-text">
                            Number of devices: <span class="text-secondary" id="smallNum"></span><br>
                            <span class="text-secondary">
-                              Produces <span class="text-primary" id="smallEACH"></span> total eqACH. It will take <span class="text-primary"><span id='smallTime'></span> minutes</span> for 99.99% air disinfection.
+                              Produces <span class="text-primary" id="smallEqACH"></span> total eqACH. It will take <span class="text-primary"><span id='smallTime'></span> minutes</span> for 99.99% air disinfection.
                            </span>
                         </p>
                         <a href="https://www.lighting.philips.com/main/prof/indoor-luminaires/uv-c-disinfection-devices/uv-c-disinfection-floor-standing-air-unit/911401548581_EU/product" class="btn btn-primary">Link to product</a>
@@ -230,252 +224,10 @@
             </div>
             <div class="border bg-white text-secondary rounded px-4 pt-4 pb-3">
                <h4 class="text-primary">Probability of Infection to Number of Additional Equivalent Air Changes</h4>
-               <canvas id="myChart" width="400" height="300"></canvas>
+               <canvas id="chart" width="400" height="300"></canvas>
             </div>
          </div>
       </div>
    </main>
-   <script>
-   (function() {
-      $.each(data, function(key, value) {
-         var defaultKey=1;
-         $.each(data[key], function(i, f) {
-            if(i==0) defaultKey=f.default;
-            else{
-               var option = "<option value='" + f.value + "'" + (i==defaultKey?" selected":"") + ">" + f.name + "</option>"
-               $(option).insertBefore("#"+key+"Custom");
-               const select=document.getElementById(key+"Select");
-               const value=document.getElementById(key+"Val");
-               const range=document.getElementById(key+"Range");
-               range.value=data[key][defaultKey].value;
-               value.textContent=data[key][defaultKey].value;
-               select.addEventListener("change",(event)=>{
-                  if(event.target.value!="custom"){
-                     value.textContent=event.target.value;
-                     range.value=event.target.value;
-                     range.setAttribute("disabled", "true");
-                  }
-                  else range.removeAttribute("disabled");
-               });
-               range.addEventListener("input",()=>{
-                  value.textContent=range.value;
-               });
-            }
-         });
-      });
-      
-      $.each(pathogen, function(i, f) {
-         var option = "<option value='" + i + "'>" + f.name + "</option>"
-         $("#pathogenSelect").append(option);
-      });
-      $("#pathogenSelect").on("change", function() {
-         if ($("#pathogenSelect").val()==0) {
-            $("#quantaEffectSection").removeAttr('hidden');
-            $("#quantaProdSelect").empty();
-            option="<option id='quantaProdCustom' value='custom'>Custom</option>";
-            $("#quantaProdSelect").append(option);
-            values = pathogen[$("#pathogenSelect").val()].data;
-            option = "<option value='" + values.resting + "' selected>" + "Resting - Oral breathing</option>"
-            $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.activity + "'>" + "Light activity - Speaking</option>"
-            $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.activity2 + "'>" + "Light activity - Loudly speaking</option>"
-            $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.heavyactivity + "'>" + "Heavy activity - Oral breathing</option>"
-            $(option).insertBefore("#quantaProdCustom");
-            $("#quantaProdVal").text(values.resting)
-         }
-         else {
-            $("#quantaEffectSection").attr('hidden','true');
-            $("#quantaEffectSelect").val("1");
-            $("#quantaEffectVal").text("1");
-            $("#quantaProdSelect").empty();
-            option="<option id='quantaProdCustom' value='custom'>Custom</option>";
-            $("#quantaProdSelect").append(option);
-            values = pathogen[$("#pathogenSelect").val()].data;
-            option = "<option value='" + values.resting + "' selected>" + "Resting - Oral breathing</option>"
-            $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.standing + "'>" + "Standing - Speaking</option>"
-            $(option).insertBefore("#quantaProdCustom");
-            option = "<option value='" + values.activity + "'>" + "Light activity - Loudly speaking</option>"
-            $(option).insertBefore("#quantaProdCustom");
-            $("#quantaProdVal").text(values.resting)
-         }
-      });
-      const decompVal=document.getElementById("decompVal");
-      const decompRange=document.getElementById("decompRange");
-      decompRange.addEventListener("input",()=>{
-         decompVal.textContent=decompRange.value;
-      });
-   })();
-
-   $(".input").change(function(){
-      calcProducts();
-   });
-
-   function calculate() {
-      return new Promise(function(resolve, reject) {
-         var result = [];
-         var i = parseFloat(document.getElementById("inputNumInfectants").value);
-         var p = parseFloat(document.getElementById("breathRateVal").textContent);
-         var q = parseFloat(document.getElementById("quantaProdVal").textContent);
-         var t = parseFloat(document.getElementById("inputExposureTime").value);
-         var variantEff = parseFloat(document.getElementById("quantaEffectVal").textContent);
-         var V = parseFloat(document.getElementById("inputRoomHeight").value)*parseFloat(document.getElementById("inputRoomArea").value);
-         var N = parseFloat(document.getElementById("inputNumPeople").value);
-         var ACH_v = parseFloat(document.getElementById("ventilationVal").textContent);
-         var ACH_d = parseFloat(document.getElementById("decompVal").textContent);
-         var desired_prob = parseFloat(document.getElementById("percentInput").value);
-         var eqACH = (-i*p*q*t*variantEff/V)/(Math.log(1-(desired_prob/100)))-(ACH_v+ACH_d);
-
-         if (eqACH<0) eqACH = 0;
-
-         const ctx = document.getElementById('myChart');
-         Chart.helpers.each(Chart.instances, function(instance){
-            instance.destroy();
-         });
-         const myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-               labels: [...Array(26).keys()],
-               datasets: [{
-                  label: '',
-                  data: Array.from(Array(26), (_, index) => 100*(1-Math.exp((-i*p*q*t*variantEff/V)/(ACH_v+ACH_d+index)))),
-                  fill: false,
-                  borderColor: 'rgb(75, 192, 192)',
-                  tension: 0.6
-               }]
-            },
-            options: {
-               plugins: {
-                  legend: {
-                     display: false
-                  },
-               },
-               scales: {
-                  y: {
-                     beginAtZero: true,
-                     title: {
-                        display: true,
-                        text: "Probability of Infection (%)"
-                     }
-                  },
-                  x: {
-                     title: {
-                        display: true,
-                        text: "Additional eqACH"
-                     }
-                  }
-               }
-            }
-         });
-
-         resolve(eqACH);
-      });
-   }
-
-   function calcProducts(){
-      calculate().then(function (result) {
-         if(!isNaN(result)){
-            console.log(result)
-            if(result>100){
-               $("#outOfRange").removeAttr('hidden');
-               $("#noRecommendation").attr('hidden','true');
-
-               $("#output").text(result.toFixed(2));
-               $("#ceilProd").attr('hidden','true');
-               $("#wallProd").attr('hidden','true');
-               $("#smallProd").attr('hidden','true');
-               $("#midProd").attr('hidden','true');
-               $("#bigProd").attr('hidden','true');
-            }
-            else if(result==0){
-               $("#noRecommendation").removeAttr('hidden');
-               $("#outOfRange").attr('hidden','true');
-               $("#output").text(result.toFixed(2));
-               $("#ceilProd").attr('hidden','true');
-               $("#wallProd").attr('hidden','true');
-               $("#smallProd").attr('hidden','true');
-               $("#midProd").attr('hidden','true');
-               $("#bigProd").attr('hidden','true');
-            }
-            else{
-               $("#output").text(result.toFixed(2));
-   
-               var roomVol = parseFloat($("#inputRoomHeight").val())*parseFloat($("#inputRoomArea").val());
-
-               var upperEACH = (2000)/(roomVol);
-               var bigEACH = (380)/(roomVol);
-               var midEACH = (220)/(roomVol);
-               var smallEACH = (240)/(roomVol);
-               var upperNum = 0;
-               var totalEACH = result;
-
-               if($("#inputRoomHeight").val()>=2.5){
-                  upperNum = Math.ceil(totalEACH/upperEACH);
-
-                  if(upperNum<10){
-                     var upperTotal = upperNum * upperEACH;
-                     var upperTime = (-Math.log(1/10000)/upperTotal)*60;
-
-                     $("#ceilNum").text(upperNum);
-                     $("#wallNum").text(upperNum);
-                     $("#ceilEACH").text(upperTotal.toFixed(2));
-                     $("#wallEACH").text(upperTotal.toFixed(2));
-                     $("#ceilTime").text(upperTime.toFixed(2));
-                     $("#wallTime").text(upperTime.toFixed(2));
-                     $("#ceilProd").removeAttr('hidden');
-                     $("#wallProd").removeAttr('hidden');
-                  }
-                  else{
-                     $("#ceilProd").attr('hidden','true');
-                     $("#wallProd").attr('hidden','true');
-                  }
-               }
-               else {
-                  $("#ceilProd").attr('hidden','true');
-                  $("#wallProd").attr('hidden','true');
-               }
-
-               var bigNum = Math.ceil(totalEACH/bigEACH);
-               if(bigNum<10){
-                  var bigTotal = bigNum * bigEACH;
-                  var bigTime = (-Math.log(1/10000)/bigTotal)*60;
-                  $("#bigNum").text(bigNum);
-                  $("#bigEACH").text(bigTotal.toFixed(2));
-                  $("#bigTime").text(bigTime.toFixed(2));
-                  $("#bigProd").removeAttr('hidden');
-               }
-               else $("#bigProd").attr('hidden','true');
-
-               var midNum = Math.ceil(totalEACH/midEACH);
-               if(midNum<10){
-                  var midTotal = midNum * midEACH;
-                  var midTime = (-Math.log(1/10000)/midTotal)*60;
-                  $("#midNum").text(midNum);
-                  $("#midEACH").text(midTotal.toFixed(2));
-                  $("#midTime").text(midTime.toFixed(2));
-                  $("#midProd").removeAttr('hidden');
-               }
-               else $("#midProd").attr('hidden','true');
-
-               var smallNum = Math.ceil(totalEACH/smallEACH);
-               if(smallNum<10){
-                  var smallTotal = smallNum * smallEACH;
-                  var smallTime = (-Math.log(1/10000)/smallTotal)*60;
-                  $("#smallNum").text(smallNum);
-                  $("#smallEACH").text(smallTotal.toFixed(2));
-                  $("#smallTime").text(smallTime.toFixed(2));
-                  $("#smallProd").removeAttr('hidden');
-               }
-               else $("#smallProd").attr('hidden','true');
-            }
-         }
-      })
-   }
-
-   calcProducts();
-   </script>
 </body>
-
 </html>

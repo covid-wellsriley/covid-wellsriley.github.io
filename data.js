@@ -1,9 +1,6 @@
 data={
    "breathRate": [
       {
-         default: 2
-      },
-      {
          name: "Breathing",
          value: 0.5
       },
@@ -17,9 +14,6 @@ data={
       }
    ],
    "quantaProd": [
-      {
-         default: 1
-      },
       {
          name: "Resting - Oral breathing",
          value: 5.7
@@ -39,9 +33,6 @@ data={
    ],
    "quantaEffect": [
       {
-         default: 1
-      },
-      {
          name: "Wildtype",
          value: 1
       },
@@ -59,9 +50,6 @@ data={
       }
    ],
    "ventilation": [
-      {
-         default: 1
-      },
       {
          name: "Closed windows",
          value: 0.3
@@ -90,8 +78,8 @@ pathogen = [
       name: "SARS-COV-2",
       data: {
          resting: 5.7,
-         activity: 490,
-         activity2: 76,
+         activity: 76,
+         activity2: 490,
          heavyactivity: 38
       }
    },
