@@ -134,7 +134,6 @@ $( document ).ready(function() {
  function calcProducts(){
     calculate().then(function (result) {
        if(!isNaN(result)){
-          console.log(result)
           if(result>100){
              $("#outOfRange").removeAttr('hidden');
              $("#noRecommendation").attr('hidden','true');
@@ -157,6 +156,9 @@ $( document ).ready(function() {
              $("#bigProd").attr('hidden','true');
           }
           else{
+            $("#noRecommendation").attr('hidden','true');
+            $("#outOfRange").attr('hidden','true');
+
              $("#output").text(result.toFixed(2));
  
              var roomVol = parseFloat($("#inputRoomHeight").val())*parseFloat($("#inputRoomArea").val());
